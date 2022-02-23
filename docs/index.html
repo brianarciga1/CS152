@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0054)https://www.cs.ucr.edu/~dtan004/proj1/lab01_lexer.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>cs152 Lab #1: Lexical Analyzer Generation Using flex</title>
+<style>hcfy-result.__hcfy__result__loaded__.__hcfy__result__both__{border: 1px dotted}</style></head>
+
+<body data-new-gr-c-s-check-loaded="14.1050.0" data-gr-ext-installed="">
+
+<center>
+<h2><u>cs152 Lab #1: Lexical Analyzer Generation Using <i>flex</i></u></h2>
+</center>
+
+<p>
+This week we will hand out the first phase of the class
+project, which deals with lexical analysis using the <i>flex</i> tool.  We will also
+complete an exercise that will help you get acquainted with <i>flex</i>.
+</p>
+
+<p>
+Outline for today's lab:
+</p><ol>
+<li> Go over the first phase of the class project (handed out)
+</li><li> Complete an exercise to help you become familiar with <i>flex</i>
+</li><li> Begin working on the first phase of the class project
+</li></ol>
+<p></p>
+
+<hr>
+
+<h3>Practice with <i>flex</i></h3>
+
+<p>
+In this exercise, we will write a <i>flex</i> specification for a lexical analyzer for a simple
+calculator language.  For now, this language will contain integer numbers, the operators
+plus, minus, multiply, and divide, and parentheses for grouping.  Additionally, the symbol
+"=" is in the language to terminate an expression.  These symbols and their corresponding
+token names are shown in the table below.
+</p>
+
+<br>
+<table border="1" cellpadding="3">
+<tbody><tr bgcolor="#FFFFCC">
+   <td><b>Symbol in Language</b></td>
+   <td><b>Token Name</b></td>
+</tr>
+<tr>
+   <td>integer number (e.g., "0", "12", "1719")</td>
+   <td>NUMBER XXXX <font size="-1">[where XXXX is the number itself]</font></td>
+</tr>
+<tr>
+   <td>+</td>
+   <td>PLUS</td>
+</tr>
+<tr>
+   <td>-</td>
+   <td>MINUS</td>
+</tr>
+<tr>
+   <td>*</td>
+   <td>MULT</td>
+</tr>
+<tr>
+   <td>/</td>
+   <td>DIV</td>
+</tr>
+<tr>
+   <td>(</td>
+   <td>L_PAREN</td>
+</tr>
+<tr>
+   <td>)</td>
+   <td>R_PAREN</td>
+</tr>
+<tr>
+   <td>=</td>
+   <td>EQUAL</td>
+</tr>
+</tbody></table>
+<br>
+
+<p>
+The calculator language itself is very simple.  There is only one type of phrase
+in the language: "Expression=", where "Expression" is defined in the
+<a href="Syntax Diagrams.html">similar way as for the class project</a>, except for the fact that there
+are no variables in the calculator language, only numbers.  For example, all of the following
+are valid in the calculator language.
+</p>
+
+<code>
+21=<br>
+2+3*4=<br>
+(2+3)*4=<br>
+30/3/5=<br>
+-250/50=<br>
+(10+2)*-(3-5)=<br>
+40-20-5=<br>
+4*(1/1-3/3+10/5-21/7+45/9-121/11+26/13-45/15+34/17-38/19+63/21-1/1+2002/1001)=<br>
+</code>
+
+<p>
+Note, however, that lexical analysis only scans for valid <i>tokens</i> in the calculator
+language, not valid expressions.  The parsing phase (phase 2, the next phase of the class project) 
+is where sequences of tokens will be checked to ensure that they adhere to the specified
+language grammar.  Thus, for this exercise which deals only with lexical analysis, even
+such phrases as <code>*/2=10++-(+</code> and <code>***101***())(-</code> can still be
+tokenized successfully.
+</p>
+
+<p>
+<b>Task 1:</b> Create a <i>flex</i> specification to recognize tokens in the calculator language.
+Print out an error message and exit if any unrecognized character is encountered in the input.
+Use <i>flex</i> to compile your specification into an executable lexical analyzer that
+reads text from standard-in and prints the identified tokens to the screen, one token per line.
+</p>
+
+<p>
+<b>Task 2:</b> Enhance your <i>flex</i> specification so that input text can be optionally read
+from an input file, if one is specified on the command line when invoking the lexical
+analyzer.
+
+</p><p>
+<b>Task 3:</b> Enhance your <i>flex</i> specification so that in addition to printing out
+each encountered token, the lexical analyzer will also count the following.
+</p><ul>
+<li> The number of integers encountered
+</li><li> The number of operators encountered: <code>+, -, *, /</code>
+</li><li> The number of parentheses encountered: <code>(, )</code>
+</li><li> The number of equal signs encountered
+</li></ul>
+The total counts should be printed to the screen after all input text has been tokenized.
+The counts need not be printed if an unrecognized character is encountered in the input
+(since the lexical analyzer should just terminate after issuing the error message).
+<p></p>
+
+<p>
+<b>Task 4:</b> For a challenge, you may want to try extending the calculator
+language to allow for decimal numbers in addition to regular integers.  Thus, the following numbers
+should be recognized by your lexical analyzer.
+</p>
+
+<code>
+.123<br>
+0.17<br>
+2.171<br>
+5.010<br>
+171.0023<br>
+</code>
+
+<p>
+For an even greater challenge, extend the calculator language to allow for scientific notation
+in the numbers.  After the number, there can be an optional "e-phrase" consisting of either
+"e" or "E", followed by an optional "+" or "-", followed by one or more digits.  For example,
+the following numbers in scientific notation would be recognized by your lexical analyzer.
+</p>
+
+<code>
+2e7<br>
+2e+7<br>
+2e-7<br>
+2E+102<br>
+5E0<br>
+0.201e+17<br>
+</code>
+
+
+
+
+
+</body><div style="all: initial;"><div id="__hcfy__" style="all: initial;"></div></div><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
