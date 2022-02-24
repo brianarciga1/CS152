@@ -28,7 +28,7 @@ Use 'git' to clone the project template:
 
 ## Check Your Tasks for Lab 1
 
-Read the documentation of flex and your tasks in [home page for lab1](https://www.cs.ucr.edu/~dtan004/proj1/lab01_lexer.html). From this starter template, you can edit 'calc.lex' to finish tasks step by step.  
+Read the documentation of flex and your tasks in [home page for lab1](https://cs152-ucr-gupta.github.io/website/lab01_lexer.html). From this starter template, you can edit 'calc.lex' to finish tasks step by step.  
 
 ## Using Flex to generate C source code
 
