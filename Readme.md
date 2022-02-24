@@ -1,10 +1,7 @@
 CS152 Lab: A Calculator Example
 ===================================
 
-[home page for lab1](https://www.cs.ucr.edu/~dtan004/proj1/lab01_lexer.html)
-
-[home page for lab2](https://www.cs.ucr.edu/~dtan004/proj2/lab02_parser.html)
-
+[home page for lab1](https://cs152-ucr-gupta.github.io/website/lab01_lexer.html)
 
 ## Tools preparation
 
