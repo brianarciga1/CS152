@@ -1,38 +1,42 @@
-%{
-	int currentLine = 1, currentPos = 1;
+%{   
+   int currLine = 1, currPos = 1;
 %}
 
-DIGIT [0-9]
+DIGIT    [0-9]
+   
+%%
+
+"-"            {printf("MINUS\n"); currPos += yyleng;}
+"+"            {printf("PLUS\n"); currPos += yyleng;}
+"*"            {printf("MULT\n"); currPos += yyleng;}
+"/"            {printf("DIV\n"); currPos += yyleng;}
+"="            {printf("EQUAL\n"); currPos += yyleng;}
+"("            {printf("L_PAREN\n"); currPos += yyleng;}
+")"            {printf("R_PAREN\n"); currPos += yyleng;}
+
+{DIGIT}+       {printf("NUMBER %s\n", yytext); currPos += yyleng;}
+
+[ \t]+         {/* ignore spaces */ currPos += yyleng;}
+
+"\n"           {currLine++; currPos = 1;}
+
+.              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
 
 %%
 
-"+" {printf("PLUS\n"); currentPos += yyleng;}
-"-" {printf("MINUS\n"); currentPos += yyleng;}
-"*" {printf("MULT\n"); currentPos += yyleng;}
-"/" {printf("DIV\n"); currentPos += yyleng;}
-"(" {printf("L_PAREN\n"); currentPos += yyleng;}
-")" {printf("R_PAREN\n"); currentPos += yyleng;}
-"=" {printf("EQUAL\n"); currentPos += yyleng;}
-
-{DIGIT}+	{printf("NUMBER %s\n", yytext); currentPos += yyleng;}
-
-[ \t]+	{/* ignore spaces */ currentPos += yyleng;}
-
-"\n"	{currentLine++; currentPos = 1;}
-
-.	{printf("Error at line %d, column %d", currentLine, currentPos);}
-
-%%
-
-int main(int argc, char ** argv){
-	if (argc >= 2){
-		yyin = fopen(arg[1], "r");
-		if (yyin == NULL){
-			yyin = stdin;
-		}
-	}
-	else {
-		yylex();
-	}
-	yylex();	
+int main(int argc, char ** argv)
+{
+   if(argc >= 2)
+   {
+      yyin = fopen(argv[1], "r");
+      if(yyin == NULL)
+      {
+         yyin = stdin;
+      }
+   }
+   else
+   {
+      yyin = stdin;
+   }
+   yylex();
 }
