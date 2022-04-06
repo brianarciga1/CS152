@@ -1,43 +1,52 @@
-%{
-	int currentLine = 1, currentPos = 1;
-	int numInt = 0, numOp = 0, numPara = 0, numEq = 0;
+%{   
+   int currLine = 1, currPos = 1;
+   int numIntegers = 0;
+   int numOperators = 0;
+   int numParens = 0;
+   int numEquals = 0;
 %}
 
-DIGIT [0-9]
+DIGIT    [0-9]
+   
+%%
+
+"-"            {printf("MINUS\n"); currPos += yyleng; numOperators++;}
+"+"            {printf("PLUS\n"); currPos += yyleng; numOperators++;}
+"*"            {printf("MULT\n"); currPos += yyleng; numOperators++;}
+"/"            {printf("DIV\n"); currPos += yyleng; numOperators++;}
+"="            {printf("EQUAL\n"); currPos += yyleng; numEquals++;}
+"("            {printf("L_PAREN\n"); currPos += yyleng; numParens++;}
+")"            {printf("R_PAREN\n"); currPos += yyleng; numParens++;}
+
+{DIGIT}+       {printf("NUMBER %s\n", yytext); currPos += yyleng; numIntegers++;}
+
+[ \t]+         {/* ignore spaces */ currPos += yyleng;}
+
+"\n"           {currLine++; currPos = 1;}
+
+.              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
 
 %%
 
-"+" {printf("PLUS\n"); currentPos += yyleng;}
-"-" {printf("MINUS\n"); currentPos += yyleng;}
-"*" {printf("MULT\n"); currentPos += yyleng;}
-"/" {printf("DIV\n"); currentPos += yyleng;}
-"(" {printf("L_PAREN\n"); currentPos += yyleng;}
-")" {printf("R_PAREN\n"); currentPos += yyleng;}
-"=" {printf("EQUAL\n"); currentPos += yyleng;}
-
-{DIGIT}+	{printf("NUMBER %s\n", yytext); currentPos += yyleng; numInt++;}
-
-[ \t]+	{/* ignore spaces */ currentPos += yyleng;}
-
-"\n"	{currentLine++; currentPos = 1;}
-
-.	{printf("Error at line %d, column %d", currentLine, currentPos);}
-
-%%
-
-int main(int argc, char ** argv){
-	if (argc >= 2){
-		yyin = fopen(arg[1], "r");
-		if (yyin == NULL){
-			yyin = stdin;
-		}
-	}
-	else {
-		yyin = stdin;
-	}
-	yylex();
-	print("# Integers: %d\d", numInt);
-	print("# Operators: %d\n", numOp);
-	print("# Parentheses: %d\n", numPara);
-	print("# Equal Signs: %d\n", numEq);
+int main(int argc, char ** argv)
+{
+   if(argc >= 2)
+   {
+      yyin = fopen(argv[1], "r");
+      if(yyin == NULL)
+      {
+         yyin = stdin;
+      }
+   }
+   else
+   {
+      yyin = stdin;
+   }
+   
+   yylex();
+   
+   printf("# Integers: %d\n", numIntegers);
+   printf("# Operators: %d\n", numOperators);
+   printf("# Parentheses: %d\n", numParens);
+   printf("# Equal Signs: %d\n", numEquals);
 }
