@@ -39,14 +39,14 @@ DIGIT    [0-9]
 "false"            {printf("FALSE\n"); currPos += yyleng;}
 "return"            {printf("RETURN\n"); currPos += yyleng;}
 
-{/* Arithmetic Operators */}
+##Arithmetic Operators
 "-"            {printf("SUB\n"); currPos += yyleng;}
 "+"            {printf("ADD\n"); currPos += yyleng;}
 "*"            {printf("MULT\n"); currPos += yyleng;}
 "/"            {printf("DIV\n"); currPos += yyleng;}
 "%"            {printf("MOD\n"); currPos += yyleng;}
 
-{/* Comparison Operators */}
+##Comparison Operators
 "=="            {printf("EQ\n"); currPos += yyleng;}
 "<>"            {printf("NEQ\n"); currPos += yyleng;}
 "<"            {printf("LT\n"); currPos += yyleng;}
@@ -54,7 +54,7 @@ DIGIT    [0-9]
 "<="            {printf("LTE\n"); currPos += yyleng;}
 ">="            {printf("GTE\n"); currPos += yyleng;}
 
-{/* Other Special Symbols */}
+##Other Special Symbols
 ";"            {printf("SEMICOLON\n"); currPos += yyleng;}
 ":"            {printf("COLON\n"); currPos += yyleng;}
 ","            {printf("COMMA\n"); currPos += yyleng;}
