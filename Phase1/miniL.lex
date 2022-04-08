@@ -8,7 +8,7 @@ DIGIT    [0-9]
    
 %%
 
-/* reserved words */
+##reserved words
 "function"            {printf("FUNCTION\n"); currPos += yyleng;}
 "beginparams"            {printf("BEGIN_PARAMS\n"); currPos += yyleng;}
 "endparams"            {printf("END_PARAMS\n"); currPos += yyleng;}
