@@ -8,7 +8,7 @@ DIGIT    [0-9]
    
 %%
 
-##reserved words
+##Reserved Words
 "function"            {printf("FUNCTION\n"); currPos += yyleng;}
 "beginparams"            {printf("BEGIN_PARAMS\n"); currPos += yyleng;}
 "endparams"            {printf("END_PARAMS\n"); currPos += yyleng;}
@@ -73,7 +73,7 @@ DIGIT    [0-9]
 
 .              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
 [0-9_][a-zA-Z0-9_]*        {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
-[0-9_][a-zA-Z0-9_]*[_]          {printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", currLine, currPos, yytext); exit(0);}
+[a-zA-Z][a-zA-Z0-9_]*[_]          {printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", currLine, currPos, yytext); exit(0);}
 
 %%
 
