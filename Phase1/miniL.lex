@@ -5,9 +5,10 @@
 %}
 
 DIGIT    [0-9]
-   
+  
 %%
 
+##Reserved_Words
 "function"            {printf("FUNCTION\n"); currPos += yyleng;}
 "beginparams"            {printf("BEGIN_PARAMS\n"); currPos += yyleng;}
 "endparams"            {printf("END_PARAMS\n"); currPos += yyleng;}
@@ -38,12 +39,14 @@ DIGIT    [0-9]
 "false"            {printf("FALSE\n"); currPos += yyleng;}
 "return"            {printf("RETURN\n"); currPos += yyleng;}
 
+##Arithmetic_Operators
 "-"            {printf("SUB\n"); currPos += yyleng;}
 "+"            {printf("ADD\n"); currPos += yyleng;}
 "*"            {printf("MULT\n"); currPos += yyleng;}
 "/"            {printf("DIV\n"); currPos += yyleng;}
 "%"            {printf("MOD\n"); currPos += yyleng;}
 
+##Comparison_Operators
 "=="            {printf("EQ\n"); currPos += yyleng;}
 "<>"            {printf("NEQ\n"); currPos += yyleng;}
 "<"            {printf("LT\n"); currPos += yyleng;}
@@ -51,6 +54,7 @@ DIGIT    [0-9]
 "<="            {printf("LTE\n"); currPos += yyleng;}
 ">="            {printf("GTE\n"); currPos += yyleng;}
 
+##Other_Symbols
 ";"            {printf("SEMICOLON\n"); currPos += yyleng;}
 ":"            {printf("COLON\n"); currPos += yyleng;}
 ","            {printf("COMMA\n"); currPos += yyleng;}
@@ -60,6 +64,7 @@ DIGIT    [0-9]
 "]"            {printf("R_SQUARE_BRACKET\n"); currPos += yyleng;}
 ":="            {printf("ASSIGN\n"); currPos += yyleng;}
 
+##Identifiers_&_Numbers
 {DIGIT}+       {printf("NUMBER %s\n", yytext); currPos += yyleng;}
 [a-zA-Z]([a-zA-Z|DIGIT|_]*[a-zA-Z|DIGIT])?       {printf("IDENT %s\n", yytext); currPos += yyleng;}
 
@@ -67,6 +72,7 @@ DIGIT    [0-9]
 
 "\n"           {currLine++; currPos = 1;}
 
+##Error_Types
 .              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
 [DIGIT|_][a-zA-Z|DIGIT|_]*        {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
 [a-zA-Z][a-zA-Z|DIGIT|_]*[_]          {printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", currLine, currPos, yytext); exit(0);}
