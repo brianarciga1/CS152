@@ -19,10 +19,10 @@
    "beginlocals"   {printf("BEGIN_LOCALS"); currPos += yyleng;}
    "endlocals"   {printf("END_LOCALS"); currPos += yyleng;}
    "beginbody"   {prinf("BEGIN_BODY"); currPos += yyleng;}
-   "then"   {printf("THEN"; currPos += yyleng;}
-   "return"   {printf("RETURN"; currPos += yyleng;}
-   "endif"   {printf("ENDIF"; currPos += yyleng;}
-   "endbody"   {printf("END_BODY"; currPos += yyleng;}
+   "then"   {printf("THEN"); currPos += yyleng;}
+   "return"   {printf("RETURN"); currPos += yyleng;}
+   "endif"   {printf("ENDIF"); currPos += yyleng;}
+   "endbody"   {printf("END_BODY"); currPos += yyleng;}
    
    /*operators */
    "-"   {printf("SUB\n"); currPos += yyleng;}
@@ -47,16 +47,24 @@
 
    /*new line stuff*/
    [ \t]+    {currPos += yyleng;}
-   "\n"   {currLine++; currPos = 1};
+   "\n"   {currLine++; currPos = 1;};
    
    /*errors*/
-   . {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n"
+   . {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n"; currPos += yyleng;)}
    
 %%
 	/* C functions used in lexer */
 
 int main(int argc, char ** argv)
 {
-
+   if(argc >= 2){
+      yyin = fopen(argv[1], "r");
+      if (yyin == NULL){
+         yyin = stdin;
+      }
+   }
+   else {
+      yyin = stdin;
+   }
    yylex();
 }
