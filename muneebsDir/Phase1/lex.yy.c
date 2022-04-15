@@ -453,7 +453,8 @@ char *yytext;
    int currPos = 1;
 /* some common rules */
 DIGIT [0-9]
-#line 457 "lex.yy.c"
+LETTER [a-zA-Z]
+#line 458 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -670,7 +671,7 @@ YY_DECL
 
    /*identifiers*/
    {DIGIT}+   {printf("NUMBER %s\n", yytext); currPos += yyleng;}
-   [a-zA-Z]   {printf("IDENT %S\n", yytext); currPos += yyleng;}
+   {LETTER}+   {printf("IDENT %S\n", yytext); currPos += yyleng;}
 
    /*new line stuff*/
    [ \t]+    {currPos += yyleng;}
@@ -679,7 +680,7 @@ YY_DECL
    /*errors*/
    . {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n"; currPos += yyleng;)}
    
-#line 683 "lex.yy.c"
+#line 684 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -767,7 +768,7 @@ YY_RULE_SETUP
 #line 55 "miniL.lex"
 ECHO;
 	YY_BREAK
-#line 771 "lex.yy.c"
+#line 772 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

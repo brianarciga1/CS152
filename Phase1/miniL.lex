@@ -1,7 +1,4 @@
-  /* cs152-miniL phase1 */
-
-%{   
-   int currLine = 1, currPos = 1;
+nt currLine = 1, currPos = 1;
 %}
 
 DIGIT    [0-9]
