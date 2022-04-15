@@ -72,6 +72,8 @@ DIGIT    [0-9]
 
 "\n"           {currLine++; currPos = 1;}
 
+"##".*		{currLine++; currPos += yyleng;}
+
 ##Error_Types
 .              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
 [0-9|_][a-zA-Z|0-9|_]*        {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
