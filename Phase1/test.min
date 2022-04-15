@@ -1,0 +1,3 @@
+n := n + 1?
+2n : integer;
+n_ : integer;

@@ -74,7 +74,7 @@ DIGIT    [0-9]
 
 ##Error_Types
 .              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
-[DIGIT|_][a-zA-Z|DIGIT|_]*        {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
+[0-9|_][a-zA-Z|0-9|_]*        {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
 [a-zA-Z][a-zA-Z|DIGIT|_]*[_]          {printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", currLine, currPos, yytext); exit(0);}
 
 %%
