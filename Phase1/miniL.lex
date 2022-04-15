@@ -4,7 +4,6 @@
 %}
 
 DIGIT    [0-9]
-LETTER [a-zA-Z]
   
 %%
 
@@ -66,7 +65,7 @@ LETTER [a-zA-Z]
 
 ##Identifiers_&_Numbers
 {DIGIT}+       {printf("NUMBER %s\n", yytext); currPos += yyleng;}
-[LETTER]([LETTER|DIGIT|_]*[LETTER|DIGIT])?       {printf("IDENT %s\n", yytext); currPos += yyleng;}
+[a-zA-Z]([a-zA-Z|DIGIT|_]*[a-zA-Z|DIGIT])?       {printf("IDENT %s\n", yytext); currPos += yyleng;}
 
 [ \t]+         {/* ignore spaces */ currPos += yyleng;}
 
@@ -74,8 +73,8 @@ LETTER [a-zA-Z]
 
 ##Error_Types
 .              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
-[DIGIT|_][LETTER|DIGIT|_]*        {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
-[LETTER][LETTER|DIGIT|_]*[_]          {printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", currLine, currPos, yytext); exit(0);}
+[DIGIT|_][a-zA-Z|DIGIT|_]*        {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
+[a-zA-Z][a-zA-Z|DIGIT|_]*[_]          {printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", currLine, currPos, yytext); exit(0);}
 
 %%
 
