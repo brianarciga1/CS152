@@ -9,36 +9,29 @@
 %}
 
 %union{
-  double dval;
-  int ival;
-}
+  int num_val;
+  char* id_val;
+} // union of all the data type used by vvlval
 
 %error-verbose
-%start input
-%token MULT DIV PLUS MINUS EQUAL L_PAREN R_PAREN END
-%token <dval> NUMBER
-%type <dval> exp
-%left PLUS MINUS
-%left MULT DIV
-%nonassoc UMINUS
+%start prog_start /* begin processing top-level component */
+%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE TRUE FALSE RETURN SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET /* valid token types */
+%token <num_val> NUMBER
+%token <id_val> IDENT
+%left MINUS ADD MULT DIV MOD
+%left EQ NEQ LT GT LTE GTE
+%left AND OR
+%right NOT
+%right ASSIGN
 
 
 %% 
-input:	
-			| input line
-			;
+prog_start: functions	{ printf("prog_start -> functions\n");}
+	;
+functions: /*empty*/	{printf("functions -> epsilon\n");}
+	| function functions	{printf("functions -> function functions\n");}
+        ;
 
-line:		exp EQUAL END         { printf("\t%f\n", $1);}
-			;
-
-exp:		NUMBER                { $$ = $1; }
-			| exp PLUS exp        { $$ = $1 + $3; }
-			| exp MINUS exp       { $$ = $1 - $3; }
-			| exp MULT exp        { $$ = $1 * $3; }
-			| exp DIV exp         { if ($3==0) yyerror("divide by zero"); else $$ = $1 / $3; }
-			| MINUS exp %prec UMINUS { $$ = -$2; }
-			| L_PAREN exp R_PAREN { $$ = $2; }
-			;
 %%
 
 int main(int argc, char **argv) {
