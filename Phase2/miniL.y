@@ -26,12 +26,46 @@
 
 
 %% 
+##program
 prog_start: functions	{ printf("prog_start -> functions\n");}
 	;
+	
+##function
 functions: /*empty*/	{printf("functions -> epsilon\n");}
 	| function functions	{printf("functions -> function functions\n");}
         ;
+function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
+        ;
+	
+	
+declarations: /*empty*/	{printf("declarations -> epsilon\n");}
+        | declaration SEMICOLON declarations	{printf("declarations -> declaration SEMICOLON declarations\n");}
+        ;
+declaration: IDENT identifiers COLON INTEGER	{printf("declaration -> IDENT identifiers COLON INTEGER\n");}
+        ;
+	
 
+identifiers: COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER	{printf("declaration -> IDENT COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");}
+        | COMMA IDENT identifiers                               {printf("identifiers -> COMMA IDENT identifiers\n");}
+        ;
+identifiers: identifier	{printf("identifiers -> identifier\n");}
+identifier: IDENT {printf("ident -> IDENT %s \n", $1);}
+	;
+	
+	
+statements: statement SEMICOLON chainedstmts                 {printf("statements -> statement SEMICOLON chainedstmts\n");}
+        ;
+statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
+        | IF bool_expr THEN statements ENDIF {printf("statement -> IF bool_expr THEN statements ENDIF\n");}
+	| If bool_expr THEN statements ELSE statements ENDIF {printf("statement -> IF bool_expr THEN statements ELSE statements ENDIF\n");}
+        | WHILE bool_expr BEGINLOOP statements ENDLOOP {printf("statement -> WHILE bool_expr BEGINLOOP statements ENDLOOP\n");}
+        | DO BEGINLOOP statements ENDLOOP WHILE bool_expr {printf("statement -> DO BEGINLOOP statements ENDLOOP WHILE bool_expr\n");}
+        | READ vars {printf("statement -> READ vars\n");}
+        | WRITE vars {printf("statement -> WRITE vars\n");}
+        | CONTINUE {printf("statement -> CONTINUE\n");}
+        | RETURN expression {printf("statement -> RETURN expression\n");}
+        ; 
 %%
 
 int main(int argc, char **argv) {
