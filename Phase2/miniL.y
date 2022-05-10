@@ -54,7 +54,7 @@ identifier: IDENT {printf("ident -> IDENT %s \n", $1);}
 	;
 	
 	
-statements: statement SEMICOLON chainedstmts                 {printf("statements -> statement SEMICOLON chainedstmts\n");}
+statements: statement SEMICOLON statements	{printf("statements -> statement SEMICOLON statements\n");}
         ;
 statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
         | IF bool_expr THEN statements ENDIF {printf("statement -> IF bool_expr THEN statements ENDIF\n");}
