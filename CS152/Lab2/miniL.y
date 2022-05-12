@@ -89,6 +89,12 @@ comp: EQ {printf("comp -> EQ\n");}
 	| LTE {printf("comp -> LTE\n");}
 	| GTE {printf("comp -> GTE\n");}
 	;
+	
+multiplicative_expr: term {printf("multiplicative_expr -> term\n");}
+	| term MULT term {printf("multiplicative_expr -> term MULT term\n");}
+	| term DIV term {printf("multiplicative_expr -> term DIV term\n");}
+	| term MOD term {printf("multiplicative_expr -> term MOD term\n");}   
+	;
 
 vars:           
           var {printf("vars -> var\n");}
@@ -109,13 +115,6 @@ expression:
           multiplicative_exp {printf("expression -> multiplicative_exp\n");}
         | multiplicative_exp ADD expression {printf("expression -> multiplicative_exp ADD expression\n");}
         | multiplicative_exp MINUS expression {printf("expression -> multiplicative_exp MINUS expression\n");}
-        ;
-
-multiplicative_exp:  
-          term {printf("multiplicative_exp -> term\n");}
-        | term MULT multiplicative_exp {printf("multiplicative_exp -> term MULT multiplicative_exp\n");}
-        | term DIV multiplicative_exp {printf("multiplicative_exp -> term DIV multiplicative_exp\n");}
-        | term MOD multiplicative_exp {printf("multiplicative_exp -> term MOD multiplicative_exp\n");}
         ;
 
 term:           
