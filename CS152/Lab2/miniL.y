@@ -14,7 +14,7 @@ FILE *yyin;
 
 %error-verbose
 %start prog_start
-%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN ENDIF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
+%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
 %token <id_val> IDENT
 %token <num_val> NUMBER
 %left ADD MINUS
@@ -66,8 +66,8 @@ statements:
 
 statement:      
           var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
-        | IF bool_exp THEN statements ENDIF {printf("statement -> IF bool_exp THEN statements ENDIF\n");}
-        | IF bool_exp THEN statements ELSE statements ENDIF {printf("statement -> IF bool_exp THEN statements ELSE statements ENDIF\n");}
+        | IF bool_exp THEN statements END_IF {printf("statement -> IF bool_exp THEN statements END_IF\n");}
+        | IF bool_exp THEN statements ELSE statements END_IF {printf("statement -> IF bool_exp THEN statements ELSE statements END_IF\n");}
         | WHILE bool_exp BEGIN_LOOP statements END_LOOP {printf("statement -> WHILE bool_exp BEGIN_LOOP statements END_LOOP\n");}
         | DO BEGIN_LOOP statements END_LOOP WHILE bool_exp {printf("statement -> DO BEGIN_LOOP statements END_LOOP WHILE bool_exp\n");}
         | READ vars {printf("statement -> READ vars\n");}
