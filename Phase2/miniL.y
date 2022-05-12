@@ -26,11 +26,9 @@
 
 
 %% 
-##program
 prog_start: functions	{ printf("prog_start -> functions\n");}
 	;
 	
-##function
 functions: /*empty*/	{printf("functions -> epsilon\n");}
 	| function functions	{printf("functions -> function functions\n");}
         ;
@@ -38,7 +36,6 @@ function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LO
 	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
         ;
 	
-##declaration	
 declarations: /*empty*/	{printf("declarations -> epsilon\n");}
         | declaration SEMICOLON declarations	{printf("declarations -> declaration SEMICOLON declarations\n");}
         ;
@@ -46,14 +43,12 @@ declaration: identifiers COLON INTEGER	{printf("declaration -> identifiers COLON
 	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGERS {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");} 
         ;
 
-##identifier
 identifiers: identifier	{printf("identifiers -> identifier\n");}
         | identifer COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers\n");}
         ;
 identifier: IDENT {printf("identifier -> IDENT %s\n", $1);}
 	;
 	
-##statement
 statements: statement SEMICOLON statements	{printf("statements -> statement SEMICOLON statements\n");}
         ;
 statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
@@ -67,16 +62,14 @@ statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n")
         | RETURN expression {printf("statement -> RETURN expression\n");}
         ;
 	
-##bool-expr
 bool_expr: relation_and_exp {printf("bool_exp -> relation_and_exp\n");}
 	| relation_and_exp OR bool_exp {printf("bool_expr -> relation_and_exp OR bool_exp\n");}
         ;
 
-##relation-and-expr
 relation_and_exp: relation_exp {print("relation_and_exp -> relation_exp");}
 	| relation_and_exp AND relation_exp {print("relation_and_exp -> relation_and_exp AND relation_exp\n");}
+	;
 	
-##relation-expr
 relation_exp: expression comp expression {printf("relation_exp -> expression comp expression\n");}
 	| NOT TRUE {printf("relation_exp -> NOT TRUE\n");}
 	| NOT FALSE {printf("relation_exp -> NOT FALSE\n");}
@@ -87,7 +80,6 @@ relation_exp: expression comp expression {printf("relation_exp -> expression com
         | L_PAREN bool_exp R_PAREN {printf("relation_exp -> L_PAREN bool_exp R_PAREN\n");}
         ;
 
-##comp
 comp: EQ {printf("comp -> EQ\n");}
 	| NEQ {printf("comp -> NEQ\n");}
 	| LT {printf("comp -> LT\n");}
