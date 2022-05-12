@@ -9,7 +9,6 @@ DIGIT    [0-9]
   
 %%
 
-##Reserved_Words
 "function"            {currPos += yyleng; return FUNCTION;}
 "beginparams"            {currPos += yyleng; return BEGIN_PARAMS;}
 "endparams"            {currPos += yyleng; return END_PARAMS;}
@@ -40,14 +39,12 @@ DIGIT    [0-9]
 "false"            {currPos += yyleng; return FALSE;}
 "return"            {currPos += yyleng; return RETURN;}
 
-##Arithmetic_Operators
 "-"            {currPos += yyleng; return MINUS;}
 "+"            {currPos += yyleng; return ADD;}
 "*"            {currPos += yyleng; return MULT;}
 "/"            {currPos += yyleng; return DIV;}
 "%"            {currPos += yyleng; return MOD;}
 
-##Comparison_Operators
 "=="           {currPos += yyleng; return EQ;}
 "<>"           {currPos += yyleng; return NEQ;}
 "<"            {currPos += yyleng; return LT;}
@@ -55,7 +52,6 @@ DIGIT    [0-9]
 "<="           {currPos += yyleng; return LTE;}
 ">="           {currPos += yyleng; return GTE;}
 
-##Other_Symbols
 ";"            {currPos += yyleng; return SEMICOLON;}
 ":"            {currPos += yyleng; return COLON;}
 ","            {currPos += yyleng; return COMMA;}
@@ -65,7 +61,6 @@ DIGIT    [0-9]
 "]"            {currPos += yyleng; return R_SQUARE_BRACKET;}
 ":="           {currPos += yyleng; return ASSIGN;}
 
-##Identifiers_&_Numbers
 {DIGIT}+       {yylval.num_val = atoi(yytext); currPos += yyleng; return NUMBER;}
 [a-zA-Z]([a-zA-Z|DIGIT|_]*[a-zA-Z|DIGIT])?       {yylval.id_val = yytext; currPos += yyleng; return IDENT;}
 
@@ -75,7 +70,6 @@ DIGIT    [0-9]
 
 "##".*		{currLine++; currPos += yyleng;}
 
-##Error_Types
 .              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
 
 [0-9|_][a-zA-Z|0-9|_]*        {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
