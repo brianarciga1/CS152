@@ -14,7 +14,7 @@
 } // union of all the data type used by vvlval
 
 %error-verbose
-%start prog_start /* begin processing top-level component */
+%start prog_start
 %token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE TRUE FALSE RETURN SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET /* valid token types */
 %token <num_val> NUMBER
 %token <id_val> IDENT
@@ -29,14 +29,14 @@
 prog_start: functions	{ printf("prog_start -> functions\n");}
 	;
 	
-functions: /*empty*/	{printf("functions -> epsilon\n");}
+functions: {printf("functions -> epsilon\n");}
 	| function functions	{printf("functions -> function functions\n");}
         ;
 function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
 	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
         ;
 	
-declarations: /*empty*/	{printf("declarations -> epsilon\n");}
+declarations: {printf("declarations -> epsilon\n");}
         | declaration SEMICOLON declarations	{printf("declarations -> declaration SEMICOLON declarations\n");}
         ;
 declaration: identifiers COLON INTEGER	{printf("declaration -> identifiers COLON INTEGER\n");}
@@ -108,7 +108,7 @@ term: var {printf("term -> var\n");}
         | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
 	;
 	
-other_expressions: /*empty*/ {printf("other_expressions -> epsilon\n");}
+other_expressions: {printf("other_expressions -> epsilon\n");}
 	| expression {printf("other_expressions -> expression\n");}
 	| expression COMMA other_expressions {printf("other_expressions -> expression COMMA other_expressions\n");}
 	;
