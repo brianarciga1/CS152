@@ -26,16 +26,19 @@
 
 
 %% 
+/*program*/
 prog_start: functions	{ printf("prog_start -> functions\n");}
 	;
 	
+/*function*/
 functions: {printf("functions -> epsilon\n");}
 	| function functions	{printf("functions -> function functions\n");}
         ;
 function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
 	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
         ;
-	
+
+/*declaration*/
 declarations: {printf("declarations -> epsilon\n");}
         | declaration SEMICOLON declarations	{printf("declarations -> declaration SEMICOLON declarations\n");}
         ;
