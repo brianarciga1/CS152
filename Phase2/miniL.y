@@ -38,12 +38,13 @@ function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LO
 
 
 declarations: {printf("declarations -> epsilon\n");}
-        | declaration SEMICOLON declarations	{printf("declarations -> declaration SEMICOLON declarations\n");}
-        ;
-declaration: identifiers COLON INTEGER	{printf("declaration -> identifiers COLON INTEGER\n");}
+	| declaration SEMICOLON declarations {printf("declarations -> declaration SEMICOLON declarations\n");}
+	;
+
+declaration: identifiers COLON INTEGER {printf("declaration -> identifiers COLON INTEGER\n");}
 	| identifiers COLON ENUM L_PAREN identifiers R_PAREN {printf("declaration -> identifiers COLON ENUM L_PAREN identifiers R_PAREN\n");}
-	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");} 
-        ;
+	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");}
+	;
 
 identifiers: ident {printf("identifiers -> ident\n");}
 	| ident COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers");}
