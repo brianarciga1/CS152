@@ -1,30 +1,31 @@
+    /* cs152-miniL phase2 */
 %{
-#include <stdio.h>
-#include <stdlib.h>
-void yyerror(const char *msg);
-extern int currLine;
-extern int currPos;
-FILE *yyin;
+ #include <stdio.h>
+ #include <stdlib.h>
+ void yyerror(const char *msg);
+ extern int currLine;
+ extern int currPos;
+ FILE * yyin;
 %}
 
 %union{
-    int num_val;
-    char* id_val;
-}
+  int num_val;
+  char* id_val;
+} // union of all the data type used by vvlval
 
 %error-verbose
 %start prog_start
-%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
-%token <id_val> IDENT
+%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN 
 %token <num_val> NUMBER
-%left ADD MINUS
-%left LT LTE GT GTE EQ NEQ
-%right NOT
+%token <id_val> IDENT
+%left MINUS ADD MULT DIV MOD
+%left EQ NEQ LT GT LTE GTE
 %left AND OR
+%right NOT
 %right ASSIGN
-%left MULT DIV MOD
 
-%%
+
+%% 
 
 prog_start:
           functions {printf("prog_start -> functions\n");}
