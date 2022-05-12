@@ -43,14 +43,17 @@ declaration: identifiers COLON INTEGER	{printf("declaration -> identifiers COLON
 	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");} 
         ;
 
-identifiers: identifier	{printf("identifiers -> identifier\n");}
-        | identifier COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers\n");}
-        ;
-identifier: IDENT {printf("identifier -> IDENT %s\n", $1);}
+identifiers: ident {printf("identifiers -> ident\n");}
+	| ident COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers");}
 	;
-	
-statements: statement SEMICOLON statements	{printf("statements -> statement SEMICOLON statements\n");}
+
+ident: IDENT {printf("ident -> IDENT %s\n", $1);}
+	;
+
+statements: /*empty*/ {printf("statements -> epsilon\n");}
+	| statement SEMICOLON statements {printf("statement SEMICOLON statements\n");}
         ;
+
 statement:      
           var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
         | IF bool_exp THEN statements END_IF {printf("statement -> IF bool_exp THEN statements END_IF\n");}
@@ -69,8 +72,8 @@ vars:
         ;
 
 var:            
-          identifier {printf("var -> ident\n");}
-        | identifier L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> identifier L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
+          ident {printf("var -> ident\n");}
+        | ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
         ;
 
 bool_exp:   
@@ -128,7 +131,7 @@ term:
         | MINUS var {printf("term -> MINUS var\n");}
         | MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
         | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
-        | identifier L_PAREN expressions R_PAREN {printf("term -> identifier L_PAREN expressions R_PAREN\n");}
+        | ident L_PAREN expressions R_PAREN {printf("term -> ident L_PAREN expressions R_PAREN\n");}
         ;
 
 %%
