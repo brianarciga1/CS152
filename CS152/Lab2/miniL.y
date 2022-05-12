@@ -100,26 +100,24 @@ multiplicative_expr: term {printf("multiplicative_expr -> term\n");}
 	| term DIV term {printf("multiplicative_expr -> term DIV term\n");}
 	| term MOD term {printf("multiplicative_expr -> term MOD term\n");}   
 	;
+	
+term: var {printf("term -> var\n");}
+	| NUMBER {printf("term -> NUMBER\n");}
+	| L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
+	| ident L_PAREN expression R_PAREN {printf("term -> ident L_PAREN expression R_PAREN\n");}
+	| MINUS var {printf("term -> MINUS var\n");}
+	| MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
+	| MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
+	;
 
-vars:           
-          var {printf("vars -> var\n");}
-        | var COMMA vars {printf("vars -> var COMMA vars");}
-        ;
+vars: /*empty*/ {printf("vars -> epsilon\n");}
+	| expression {printf("vars-> expression\n");}
+	| expression COMMA vars {printf("vars -> expression COMMA vars\n");}
+	;
 
-var:            
-          ident {printf("var -> ident\n");}
-        | ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
-        ;
-
-term:           
-          var {printf("term -> var\n");}
-        | NUMBER {printf("term -> NUMBER\n");}
-        | L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
-        | MINUS var {printf("term -> MINUS var\n");}
-        | MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
-        | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
-        | ident L_PAREN expression R_PAREN {printf("term -> ident L_PAREN expression R_PAREN\n");}
-        ;
+var: ident {printf("var -> ident\n");}
+	| ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
+	;
 
 %%
 
