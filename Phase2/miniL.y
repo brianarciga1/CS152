@@ -40,11 +40,11 @@ declarations: /*empty*/	{printf("declarations -> epsilon\n");}
         | declaration SEMICOLON declarations	{printf("declarations -> declaration SEMICOLON declarations\n");}
         ;
 declaration: identifiers COLON INTEGER	{printf("declaration -> identifiers COLON INTEGER\n");}
-	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGERS {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");} 
+	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");} 
         ;
 
 identifiers: identifier	{printf("identifiers -> identifier\n");}
-        | identifer COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers\n");}
+        | identifier COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers\n");}
         ;
 identifier: IDENT {printf("identifier -> IDENT %s\n", $1);}
 	;
@@ -52,18 +52,18 @@ identifier: IDENT {printf("identifier -> IDENT %s\n", $1);}
 statements: statement SEMICOLON statements	{printf("statements -> statement SEMICOLON statements\n");}
         ;
 statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
-        | IF bool_expr THEN statements ENDIF {printf("statement -> IF bool_expr THEN statements ENDIF\n");}
-	| If bool_expr THEN statements ELSE statements ENDIF {printf("statement -> IF bool_expr THEN statements ELSE statements ENDIF\n");}
-        | WHILE bool_expr BEGINLOOP statements ENDLOOP {printf("statement -> WHILE bool_expr BEGINLOOP statements ENDLOOP\n");}
-        | DO BEGINLOOP statements ENDLOOP WHILE bool_expr {printf("statement -> DO BEGINLOOP statements ENDLOOP WHILE bool_expr\n");}
-        | READ vars {printf("statement -> READ vars\n");}
-        | WRITE vars {printf("statement -> WRITE vars\n");}
+        | IF bool_expr THEN statements END_IF {printf("statement -> IF bool_expr THEN statements ENDIF\n");}
+	| IF bool_expr THEN statements ELSE statements END_IF {printf("statement -> IF bool_expr THEN statements ELSE statements ENDIF\n");}
+        | WHILE bool_expr BEGIN_LOOP statements END_LOOP {printf("statement -> WHILE bool_expr BEGIN_LOOP statements END_LOOP\n");}
+        | DO BEGIN_LOOP statements END_LOOP WHILE bool_expr {printf("statement -> DO BEGIN_LOOP statements END_LOOP WHILE bool_expr\n");}
+        | READ var {printf("statement -> READ var\n");}
+        | WRITE var {printf("statement -> WRITE var\n");}
         | CONTINUE {printf("statement -> CONTINUE\n");}
         | RETURN expression {printf("statement -> RETURN expression\n");}
         ;
 	
-bool_expr: relation_and_exp {printf("bool_exp -> relation_and_exp\n");}
-	| relation_and_exp OR bool_exp {printf("bool_expr -> relation_and_exp OR bool_exp\n");}
+bool_expr: relation_and_exp {printf("bool_expr -> relation_and_exp\n");}
+	| relation_and_exp OR bool_expr {printf("bool_expr -> relation_and_exp OR bool_expr\n");}
         ;
 
 relation_and_exp: relation_exp {print("relation_and_exp -> relation_exp");}
@@ -74,10 +74,10 @@ relation_exp: expression comp expression {printf("relation_exp -> expression com
 	| NOT TRUE {printf("relation_exp -> NOT TRUE\n");}
 	| NOT FALSE {printf("relation_exp -> NOT FALSE\n");}
 	| NOT expression comp expression {printf("relation_exp -> NOT expression comp expression\n");}
-	| NOT L_PAREN bool_exp R_PAREN {printf("relation_exp -> NOT L_PAREN bool_exp R_PAREN\n");}
+	| NOT L_PAREN bool_expr R_PAREN {printf("relation_exp -> NOT L_PAREN bool_expr R_PAREN\n");}
         | TRUE {printf("relation_exp -> TRUE\n");}
         | FALSE {printf("relation_exp -> FALSE\n");}
-        | L_PAREN bool_exp R_PAREN {printf("relation_exp -> L_PAREN bool_exp R_PAREN\n");}
+        | L_PAREN bool_expr R_PAREN {printf("relation_exp -> L_PAREN bool_expr R_PAREN\n");}
         ;
 
 comp: EQ {printf("comp -> EQ\n");}
@@ -102,7 +102,7 @@ multiplicative_expr: term {printf("multiplicative_expr -> term\n");}
 term: var {printf("term -> var\n");}
 	| NUMBER {printf("term -> NUMBER\n");}
         | L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
-	| ident L_PAREN other_expressions R_PAREN {printf("term -> ident L_PAREN other_expressions R_PAREN\n");}
+	| IDENT L_PAREN other_expressions R_PAREN {printf("term -> IDENT L_PAREN other_expressions R_PAREN\n");}
         | MINUS var {printf("term -> MINUS var\n");}
         | MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
         | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
