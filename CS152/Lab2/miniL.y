@@ -68,8 +68,8 @@ bool_expr: relation_and_exp {printf("bool_expr -> relation_and_exp\n");}
 	| relation_and_exp OR bool_expr {printf("bool_expr -> relation_and_exp OR bool_expr\n");}
         ;
 	
-relation_and_exp: relation_exp {print("relation_and_exp -> relation_exp");}
-	| relation_and_exp AND relation_exp {print("relation_and_exp -> relation_and_exp AND relation_exp\n");}
+relation_and_exp: relation_exp {printf("relation_and_exp -> relation_exp");}
+	| relation_and_exp AND relation_exp {printf("relation_and_exp -> relation_and_exp AND relation_exp\n");}
 	;
 
 vars:           
