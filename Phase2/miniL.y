@@ -26,11 +26,9 @@
 
 
 %% 
-/*program*/
 prog_start: functions	{ printf("prog_start -> functions\n");}
 	;
 	
-/*function*/
 functions: {printf("functions -> epsilon\n");}
 	| function functions	{printf("functions -> function functions\n");}
         ;
@@ -38,7 +36,7 @@ function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LO
 	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
         ;
 
-/*declaration*/
+
 declarations: {printf("declarations -> epsilon\n");}
         | declaration SEMICOLON declarations	{printf("declarations -> declaration SEMICOLON declarations\n");}
         ;
@@ -49,7 +47,6 @@ declaration: identifiers COLON INTEGER	{printf("declaration -> identifiers COLON
 identifiers: ident {printf("identifiers -> ident\n");}
 	| ident COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers");}
 	;
-
 ident: IDENT {printf("ident -> IDENT %s\n", $1);}
 	;
 
@@ -117,7 +114,6 @@ vars: {printf("vars -> epsilon\n");}
 	| expression {printf("vars-> expression\n");}
 	| expression COMMA vars {printf("vars -> expression COMMA vars\n");}
 	;
-
 var: ident {printf("var -> ident\n");}
 	| ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
 	;
