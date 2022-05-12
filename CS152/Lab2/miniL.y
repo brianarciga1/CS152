@@ -90,6 +90,11 @@ comp: EQ {printf("comp -> EQ\n");}
 	| GTE {printf("comp -> GTE\n");}
 	;
 	
+expression: multiplicative_expr {printf("expression -> multiplicative_expr\n");}
+	| multiplicative_expr ADD expression {printf("expression -> multiplicative_expr ADD expression\n");}
+	| multiplicative_expr MINUS expression {printf("expression -> multiplicative_expr MINUS expression\n");}      
+	; 
+	
 multiplicative_expr: term {printf("multiplicative_expr -> term\n");}
 	| term MULT term {printf("multiplicative_expr -> term MULT term\n");}
 	| term DIV term {printf("multiplicative_expr -> term DIV term\n");}
@@ -106,17 +111,6 @@ var:
         | ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
         ;
 
-expressions:
-          {printf("expressions -> epsilon\n");}
-        | expression {printf("expressions -> expression\n");}
-        | expression COMMA expressions {printf("expressions -> expression COMMA expressions\n");}
-
-expression:   
-          multiplicative_expr {printf("expression -> multiplicative_expr\n");}
-        | multiplicative_expr ADD expression {printf("expression -> multiplicative_expr ADD expression\n");}
-        | multiplicative_expr MINUS expression {printf("expression -> multiplicative_expr MINUS expression\n");}
-        ;
-
 term:           
           var {printf("term -> var\n");}
         | NUMBER {printf("term -> NUMBER\n");}
@@ -124,7 +118,7 @@ term:
         | MINUS var {printf("term -> MINUS var\n");}
         | MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
         | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
-        | ident L_PAREN expressions R_PAREN {printf("term -> ident L_PAREN expressions R_PAREN\n");}
+        | ident L_PAREN expression R_PAREN {printf("term -> ident L_PAREN expression R_PAREN\n");}
         ;
 
 %%
