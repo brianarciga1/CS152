@@ -112,9 +112,9 @@ expressions:
         | expression COMMA expressions {printf("expressions -> expression COMMA expressions\n");}
 
 expression:   
-          multiplicative_exp {printf("expression -> multiplicative_exp\n");}
-        | multiplicative_exp ADD expression {printf("expression -> multiplicative_exp ADD expression\n");}
-        | multiplicative_exp MINUS expression {printf("expression -> multiplicative_exp MINUS expression\n");}
+          multiplicative_expr {printf("expression -> multiplicative_expr\n");}
+        | multiplicative_expr ADD expression {printf("expression -> multiplicative_expr ADD expression\n");}
+        | multiplicative_expr MINUS expression {printf("expression -> multiplicative_expr MINUS expression\n");}
         ;
 
 term:           
