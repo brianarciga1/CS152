@@ -128,7 +128,7 @@ term:
         | MINUS var {printf("term -> MINUS var\n");}
         | MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
         | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
-        | ident L_PAREN expressions R_PAREN {printf("term -> ident L_PAREN expressions R_PAREN\n");}
+        | identifier L_PAREN expressions R_PAREN {printf("term -> identifier L_PAREN expressions R_PAREN\n");}
         ;
 
 %%
