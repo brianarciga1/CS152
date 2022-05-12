@@ -14,10 +14,10 @@ FILE *yyin;
 
 %error-verbose
 %start prog_start
-%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN ENDIF ELSE WHILE DO BEGINLOOP ENDLOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN SUB ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
+%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN ENDIF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
 %token <id_val> IDENT
 %token <num_val> NUMBER
-%left ADD SUB
+%left ADD MINUS
 %left LT LTE GT GTE EQ NEQ
 %right NOT
 %left AND OR
@@ -68,8 +68,8 @@ statement:
           var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
         | IF bool_exp THEN statements ENDIF {printf("statement -> IF bool_exp THEN statements ENDIF\n");}
         | IF bool_exp THEN statements ELSE statements ENDIF {printf("statement -> IF bool_exp THEN statements ELSE statements ENDIF\n");}
-        | WHILE bool_exp BEGINLOOP statements ENDLOOP {printf("statement -> WHILE bool_exp BEGINLOOP statements ENDLOOP\n");}
-        | DO BEGINLOOP statements ENDLOOP WHILE bool_exp {printf("statement -> DO BEGINLOOP statements ENDLOOP WHILE bool_exp\n");}
+        | WHILE bool_exp BEGIN_LOOP statements END_LOOP {printf("statement -> WHILE bool_exp BEGIN_LOOP statements END_LOOP\n");}
+        | DO BEGIN_LOOP statements END_LOOP WHILE bool_exp {printf("statement -> DO BEGIN_LOOP statements END_LOOP WHILE bool_exp\n");}
         | READ vars {printf("statement -> READ vars\n");}
         | WRITE vars {printf("statement -> WRITE vars\n");}
         | CONTINUE {printf("statement -> CONTINUE\n");}
@@ -124,7 +124,7 @@ expressions:
 expression:   
           multiplicative_exp {printf("expression -> multiplicative_exp\n");}
         | multiplicative_exp ADD expression {printf("expression -> multiplicative_exp ADD expression\n");}
-        | multiplicative_exp SUB expression {printf("expression -> multiplicative_exp SUB expression\n");}
+        | multiplicative_exp MINUS expression {printf("expression -> multiplicative_exp MINUS expression\n");}
         ;
 
 multiplicative_exp:  
@@ -138,9 +138,9 @@ term:
           var {printf("term -> var\n");}
         | NUMBER {printf("term -> NUMBER\n");}
         | L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
-        | SUB var {printf("term -> SUB var\n");}
-        | SUB NUMBER {printf("term -> SUB NUMBER\n");}
-        | SUB L_PAREN expression R_PAREN {printf("term -> SUB L_PAREN expression R_PAREN\n");}
+        | MINUS var {printf("term -> MINUS var\n");}
+        | MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
+        | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
         | ident L_PAREN expressions R_PAREN {printf("term -> ident L_PAREN expressions R_PAREN\n");}
         ;
 
