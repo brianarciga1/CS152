@@ -110,7 +110,7 @@ term: var {printf("term -> var\n");}
 	| MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
 	;
 
-vars: /*empty*/ {printf("vars -> epsilon\n");}
+vars: {printf("vars -> epsilon\n");}
 	| expression {printf("vars-> expression\n");}
 	| expression COMMA vars {printf("vars -> expression COMMA vars\n");}
 	;
