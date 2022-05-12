@@ -124,7 +124,11 @@ term: var {printf("term -> var\n");}
         | MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
         | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
 	;
-
+other_expressions: {printf("other_expressions -> epsilon\n");}
+	| expression {printf("other_expressions -> expression\n");}
+	| expression COMMA other_expressions {printf("other_expressions -> expression COMMA other_expressions\n");}
+	;
+	
 %%
 
 int main(int argc, char ** argv) {
