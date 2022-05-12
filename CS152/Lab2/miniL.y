@@ -62,36 +62,32 @@ statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n")
         | RETURN expression {printf("statement -> RETURN expression\n");}
         ;
 	
+bool_expr: relation_and_exp {printf("bool_expr -> relation_and_exp\n");}
+	| relation_and_exp OR bool_expr {printf("bool_expr -> relation_and_exp OR bool_expr\n");}
+        ;
+	
+relation_and_exp: relation_exp {print("relation_and_exp -> relation_exp");}
+	| relation_and_exp AND relation_exp {print("relation_and_exp -> relation_and_exp AND relation_exp\n");}
+	;
+	
+relation_exp: expression comp expression {printf("relation_exp -> expression comp expression\n");}
+	| NOT TRUE {printf("relation_exp -> NOT TRUE\n");}
+	| NOT FALSE {printf("relation_exp -> NOT FALSE\n");}
+	| NOT expression comp expression {printf("relation_exp -> NOT expression comp expression\n");}
+	| NOT L_PAREN bool_expr R_PAREN {printf("relation_exp -> NOT L_PAREN bool_expr R_PAREN\n");}
+        | TRUE {printf("relation_exp -> TRUE\n");}
+        | FALSE {printf("relation_exp -> FALSE\n");}
+        | L_PAREN bool_expr R_PAREN {printf("relation_exp -> L_PAREN bool_expr R_PAREN\n");}
+        ;
 vars:           
           var {printf("vars -> var\n");}
         | var COMMA vars {printf("vars -> var COMMA vars");}
         ;
 
-var:            
-          ident {printf("var -> ident\n");}
-        | ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
-        ;
+var: IDENT {printf("var -> IDENT\n");}
+	| IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET");}
+	;  
 
-bool_exp:   
-          relation_and_exp {printf("bool_exp -> relation_and_exp\n");}
-        | relation_and_exp OR bool_exp {printf("bool_exp -> relation_and_exp OR bool_exp\n");}
-        ;
-
-relation_and_exp:  
-          relation_exp {printf("relation_and_exp -> relation_exp\n");}
-        | relation_exp AND relation_and_exp {printf("relation_and_exp -> relation_exp AND relation_and_exp\n");}
-        ;
-
-relation_exp:           
-          expression comp expression {printf("relation_exp -> expression comp expression\n");}
-        | TRUE {printf("relation_exp -> TRUE\n");}
-        | FALSE {printf("relation_exp -> FALSE\n");}
-        | L_PAREN bool_exp R_PAREN {printf("relation_exp -> L_PAREN bool_exp R_PAREN\n");}
-        | NOT expression comp expression {printf("relation_exp -> NOT expression comp expression\n");}
-        | NOT TRUE {printf("relation_exp -> NOT TRUE\n");}
-        | NOT FALSE {printf("relation_exp -> NOT FALSE\n");}
-        | NOT L_PAREN bool_exp R_PAREN {printf("relation_exp -> NOT L_PAREN bool_exp R_PAREN\n");}
-        ;
 
 comp:           
           EQ {printf("comp -> EQ\n");}
@@ -120,15 +116,14 @@ multiplicative_exp:
         | term MOD multiplicative_exp {printf("multiplicative_exp -> term MOD multiplicative_exp\n");}
         ;
 
-term:           
-          var {printf("term -> var\n");}
-        | NUMBER {printf("term -> NUMBER\n");}
+term: var {printf("term -> var\n");}
+	| NUMBER {printf("term -> NUMBER\n");}
         | L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
+	| IDENT L_PAREN other_expressions R_PAREN {printf("term -> IDENT L_PAREN other_expressions R_PAREN\n");}
         | MINUS var {printf("term -> MINUS var\n");}
         | MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
         | MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
-        | ident L_PAREN expressions R_PAREN {printf("term -> ident L_PAREN expressions R_PAREN\n");}
-        ;
+	;
 
 %%
 
