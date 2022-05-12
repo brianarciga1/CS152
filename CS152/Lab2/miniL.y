@@ -43,20 +43,14 @@ declaration: identifiers COLON INTEGER	{printf("declaration -> identifiers COLON
 	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");} 
         ;
 
-identifiers:     
-          ident {printf("identifiers -> ident\n");}
-        | ident COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers");}
+identifiers: identifier	{printf("identifiers -> identifier\n");}
+        | identifier COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers\n");}
         ;
-
-ident:         
-          IDENT {printf("ident -> IDENT %s\n", $1);}
+identifier: IDENT {printf("identifier -> IDENT %s\n", $1);}
+	;
+	
+statements: statement SEMICOLON statements	{printf("statements -> statement SEMICOLON statements\n");}
         ;
-
-statements:     
-          /*empty*/ {printf("statements -> statement\n");}
-        | statement SEMICOLON statements {printf("statement SEMICOLON statements\n");}
-        ;
-
 statement:      
           var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
         | IF bool_exp THEN statements END_IF {printf("statement -> IF bool_exp THEN statements END_IF\n");}
@@ -75,8 +69,8 @@ vars:
         ;
 
 var:            
-          ident {printf("var -> ident\n");}
-        | ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
+          identifier {printf("var -> ident\n");}
+        | identifier L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> identifier L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
         ;
 
 bool_exp:   
