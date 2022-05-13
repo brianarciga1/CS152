@@ -27,6 +27,7 @@
 
 %% 
 prog_start: functions { printf("prog_start -> functions\n");}
+	| error {yyerrok; yyclearin;}
 	;
 	
 	
