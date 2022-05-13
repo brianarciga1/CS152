@@ -62,7 +62,7 @@ DIGIT    [0-9]
 ":="           {currPos += yyleng; return ASSIGN;}
 
 {DIGIT}+       {yylval.num_val = atoi(yytext); currPos += yyleng; return NUMBER;}
-[a-zA-Z]([a-zA-Z|DIGIT|_]*[a-zA-Z|DIGIT])?       {yylval.id_val = yytext; currPos += yyleng; return IDENT;}
+[a-zA-Z]([a-zA-Z|0-9|_]*[a-zA-Z|0-9])?       {yylval.id_val = yytext; currPos += yyleng; return IDENT;}
 
 [ \t]+         {/* ignore spaces */ currPos += yyleng;}
 
