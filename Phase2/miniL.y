@@ -42,16 +42,14 @@ function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LO
 declarations: /*empty*/ {printf("declarations -> epsilon\n");}
 	| declaration SEMICOLON declarations {printf("declarations -> declaration SEMICOLON declarations\n");}
 	;
-declaration: identifiers COLON INTEGER {printf("declaration -> identifiers COLON INTEGER\n");}
-	| identifiers COLON ENUM L_PAREN identifiers R_PAREN {printf("declaration -> identifiers COLON ENUM L_PAREN identifiers R_PAREN\n");}
-	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");}
+declaration: identifier COLON INTEGER {printf("declaration -> identifier COLON INTEGER\n");}
+	| identifier COLON ENUM L_PAREN identifier R_PAREN {printf("declaration -> identifier COLON ENUM L_PAREN identifier R_PAREN\n");}
+	| identifier COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifier COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");}
 	;
 
 
-identifiers: identifier {printf("identifiers -> identifier\n");}
-	| identifier COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers");}
-	;
-identifier: IDENT {printf("identifier -> IDENT %s\n", $1);}
+identifier: /*empty*/ {printf("identifier -> epsilon\n");}
+	| IDENT COMMA identifier {printf("identifier -> IDENT COMMA identifier");}
 	;
 
 
@@ -116,7 +114,7 @@ multiplicative_expr: term {printf("multiplicative_expr -> term\n");}
 term: var {printf("term -> var\n");}
 	| NUMBER {printf("term -> NUMBER\n");}
 	| L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
-	| identifier L_PAREN expression R_PAREN {printf("term -> identifier L_PAREN expression R_PAREN\n");}
+	| IDENT L_PAREN expression R_PAREN {printf("term -> IDENT L_PAREN expression R_PAREN\n");}
 	| MINUS var {printf("term -> MINUS var\n");}
 	| MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
 	| MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
@@ -127,8 +125,8 @@ vars: /*empty*/ {printf("vars -> epsilon\n");}
 	| expression {printf("vars-> expression\n");}
 	| expression COMMA vars {printf("vars -> expression COMMA vars\n");}
 	;
-var: identifier {printf("var -> ident\n");}
-	| identifier L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> identifier L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
+var: IDENT {printf("var -> ident\n");}
+	| IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
 	;
 
 %%
