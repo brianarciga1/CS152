@@ -48,8 +48,10 @@ declaration: identifier COLON INTEGER {printf("declaration -> identifier COLON I
 	;
 
 
-identifier: /*empty*/ {printf("identifier -> epsilon\n");}
-	| IDENT COMMA identifier {printf("identifier -> IDENT COMMA identifier");}
+identifiers: identifier {printf("identifiers -> identifier\n");}
+	| identifier COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers");}
+	;
+identifier: IDENT {printf("identifier -> IDENT %s\n", $1);}
 	;
 
 
