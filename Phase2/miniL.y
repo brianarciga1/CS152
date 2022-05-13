@@ -34,13 +34,15 @@ prog_start: functions { printf("prog_start -> functions\n");}
 functions: /*empty*/ {printf("functions -> epsilon\n");}
 	| function functions	{printf("functions -> function functions\n");}
         ;
-function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declaration SEMICOLON END_PARAMS BEGIN_LOCALS declaration SEMICOLON END_LOCALS BEGIN_BODY statements END_BODY
-	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declaration SEMICOLON END_PARAMS BEGIN_LOCALS declaration SEMICOLON END_LOCALS BEGIN_BODY statements END_BODY\n");}
+function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
         ;
 
 
-declaration: /*empty*/ {printf("declaration -> epsilon\n");}
-	| identifiers COLON INTEGER {printf("declaration -> identifiers COLON INTEGER\n");}
+declarations: /*empty*/ {printf("declarations -> epsilon\n");}
+	| declaration SEMICOLON declarations {printf("declarations -> declaration SEMICOLON declarations\n");}
+	;
+declaration: identifiers COLON INTEGER {printf("declaration -> identifiers COLON INTEGER\n");}
 	| identifiers COLON ENUM L_PAREN identifiers R_PAREN {printf("declaration -> identifiers COLON ENUM L_PAREN identifiers R_PAREN\n");}
 	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");}
 	;
