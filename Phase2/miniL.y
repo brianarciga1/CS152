@@ -39,7 +39,8 @@ function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declaration SEMICOLON END_PARAMS
         ;
 
 
-declaration: identifiers COLON INTEGER {printf("declaration -> identifiers COLON INTEGER\n");}
+declaration: /*empty*/ {printf("declaration -> epsilon\n");}
+	| identifiers COLON INTEGER {printf("declaration -> identifiers COLON INTEGER\n");}
 	| identifiers COLON ENUM L_PAREN identifiers R_PAREN {printf("declaration -> identifiers COLON ENUM L_PAREN identifiers R_PAREN\n");}
 	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");}
 	;
