@@ -31,7 +31,7 @@ prog_start: functions { printf("prog_start -> functions\n");}
 	;
 	
 	
-functions: /*empty*/ {printf("functions -> epsilon\n");}
+functions: function {printf("functions -> function\n");}
 	| function functions	{printf("functions -> function functions\n");}
         ;
 function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
@@ -39,7 +39,7 @@ function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LO
         ;
 
 
-declarations: /*empty*/ {printf("declarations -> epsilon\n");}
+declarations: declaration {printf("declarations -> declaration\n");}
 	| declaration SEMICOLON declarations {printf("declarations -> declaration SEMICOLON declarations\n");}
 	;
 declaration: identifiers COLON INTEGER {printf("declaration -> identifiers COLON INTEGER\n");}
@@ -53,7 +53,7 @@ identifiers: IDENT {printf("identifiers -> IDENT\n");}
 	;
 
 
-statements: /*empty*/ {printf("statements -> epsilon\n");}
+statements: statement {printf("statements -> statements\n");}
 	| statement SEMICOLON statements {printf("statement SEMICOLON statements\n");}
         ;
 statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
@@ -121,7 +121,7 @@ term: var {printf("term -> var\n");}
 	;
 
 
-vars: /*empty*/ {printf("vars -> epsilon\n");}
+vars: var {printf("vars -> var\n");}
 	| var COMMA vars {printf("vars -> var COMMA vars\n");}
 	;
 var: IDENT {printf("var -> IDENT\n");}
