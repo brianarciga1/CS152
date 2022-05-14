@@ -26,11 +26,12 @@
 
 
 %% 
+/*PROGRAM*/
 prog_start: functions { printf("prog_start -> functions\n");}
 	| error {yyerrok; yyclearin;}
 	;
 	
-	
+/*FUNCTION*/	
 functions: /*empty*/ {printf("functions -> epsilon\n");}
 	| function functions	{printf("functions -> function functions\n");}
         ;
@@ -38,7 +39,7 @@ function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LO
 	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
         ;
 
-
+/*DECLARATION*/
 declarations: /*empty*/ {printf("declarations -> epsilon\n");}
 	| declaration SEMICOLON declarations {printf("declarations -> declaration SEMICOLON declarations\n");}
 	;
@@ -47,12 +48,12 @@ declaration: identifiers COLON INTEGER {printf("declaration -> identifiers COLON
 	| identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER {printf("declaration -> identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");}
 	;
 
-
+/*IDENTIFIER*/
 identifiers: IDENT {printf("identifiers -> IDENT\n");}
 	| IDENT COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers");}
 	;
 
-
+/*STATEMENT*/
 statements: /*empty*/ {printf("statements -> epsilon\n");}
 	| statement SEMICOLON statements {printf("statement SEMICOLON statements\n");}
         ;
@@ -97,20 +98,20 @@ comp: EQ {printf("comp -> EQ\n");}
 	| GTE {printf("comp -> GTE\n");}
 	;
 	
-	
+/*EXPRESSION*/
 expression: multiplicative_expr {printf("expression -> multiplicative_expr\n");}
 	| multiplicative_expr ADD expression {printf("expression -> multiplicative_expr ADD expression\n");}
 	| multiplicative_expr MINUS expression {printf("expression -> multiplicative_expr MINUS expression\n");}      
 	; 
 	
-	
+/*MULTIPLICATIVE-EXPR*/	
 multiplicative_expr: term {printf("multiplicative_expr -> term\n");}
 	| term MULT term {printf("multiplicative_expr -> term MULT term\n");}
 	| term DIV term {printf("multiplicative_expr -> term DIV term\n");}
 	| term MOD term {printf("multiplicative_expr -> term MOD term\n");}   
 	;
 	
-	
+/*TERM*/	
 term: var {printf("term -> var\n");}
 	| NUMBER {printf("term -> NUMBER\n");}
 	| L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
@@ -120,8 +121,8 @@ term: var {printf("term -> var\n");}
 	| MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
 	;
 
-
-vars: /*empty*/ {printf("vars -> epsilon\n");}
+/*VARS*/
+vars: var {printf("vars -> var\n");}
 	| var COMMA vars {printf("vars -> var COMMA vars\n");}
 	;
 var: IDENT {printf("var -> IDENT\n");}
