@@ -103,8 +103,8 @@ expressions: /*empty*/ {printf("expressions -> epsilon\n");}
 	| expression {printf("expressions -> expression\n");}
 	| expression COMMA expressions {printf("expressions -> expression COMMA expressions\n");};
 expression: multiplicative_expr {printf("expression -> multiplicative_expr\n");}
-	| multiplicative_expr ADD multiplicative_expr {printf("expression -> multiplicative_expr ADD multiplicative_expr\n");}
-	| multiplicative_expr MINUS multiplicative_expr {printf("expression -> multiplicative_expr MINUS multiplicative_expr\n");}      
+	| multiplicative_expr ADD expression {printf("expression -> multiplicative_expr ADD expression\n");}
+	| multiplicative_expr MINUS expression {printf("expression -> multiplicative_expr MINUS expression\n");}      
 	; 
 	
 /*MULTIPLICATIVE-EXPR*/	
