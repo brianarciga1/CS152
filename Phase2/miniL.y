@@ -68,28 +68,28 @@ statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n")
 	| RETURN expression {printf("statement -> RETURN expression\n");}
 	;
 	
-
-bool_expr: relation_and_exp {printf("bool_expr -> relation_and_exp\n");}
-	| relation_and_exp OR bool_expr {printf("bool_expr -> relation_and_exp OR bool_expr\n");}
+/*BOOL-EXPR*/
+bool_expr: relation_and_expr {printf("bool_expr -> relation_and_expr\n");}
+	| relation_and_expr OR bool_expr {printf("bool_expr -> relation_and_expr OR bool_expr\n");}
         ;
 	
-	
-relation_and_exp: relation_exp {printf("relation_and_exp -> relation_exp");}
-	| relation_and_exp AND relation_exp {printf("relation_and_exp -> relation_and_exp AND relation_exp\n");}
+/*RELATION-AND-EXPR*/
+relation_and_expr: relation_expr {printf("relation_and_expr -> relation_expr");}
+	| relation_and_expr AND relation_expr {printf("relation_and_expr -> relation_and_expr AND relation_expr\n");}
 	;
 	
-	
-relation_exp: expression comp expression {printf("relation_exp -> expression comp expression\n");}
-	| NOT TRUE {printf("relation_exp -> NOT TRUE\n");}
-	| NOT FALSE {printf("relation_exp -> NOT FALSE\n");}
-	| NOT expression comp expression {printf("relation_exp -> NOT expression comp expression\n");}
-	| NOT L_PAREN bool_expr R_PAREN {printf("relation_exp -> NOT L_PAREN bool_expr R_PAREN\n");}
-        | TRUE {printf("relation_exp -> TRUE\n");}
-        | FALSE {printf("relation_exp -> FALSE\n");}
-        | L_PAREN bool_expr R_PAREN {printf("relation_exp -> L_PAREN bool_expr R_PAREN\n");}
+/*RELATION_EXPR*/
+relation_expr: expression comp expression {printf("relation_expr -> expression comp expression\n");}
+	| NOT TRUE {printf("relation_expr -> NOT TRUE\n");}
+	| NOT FALSE {printf("relation_expr -> NOT FALSE\n");}
+	| NOT expression comp expression {printf("relation_expr -> NOT expression comp expression\n");}
+	| NOT L_PAREN bool_expr R_PAREN {printf("relation_expr -> NOT L_PAREN bool_expr R_PAREN\n");}
+        | TRUE {printf("relation_expr -> TRUE\n");}
+        | FALSE {printf("relation_expr -> FALSE\n");}
+        | L_PAREN bool_expr R_PAREN {printf("relation_expr -> L_PAREN bool_expr R_PAREN\n");}
         ;
 
-
+/*COMP*/
 comp: EQ {printf("comp -> EQ\n");}
 	| NEQ {printf("comp -> NEQ\n");}
 	| LT {printf("comp -> LT\n");}
@@ -121,7 +121,7 @@ term: var {printf("term -> var\n");}
 	| MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
 	;
 
-/*VARS*/
+/*VAR*/
 vars: var {printf("vars -> var\n");}
 	| var COMMA vars {printf("vars -> var COMMA vars\n");}
 	;
