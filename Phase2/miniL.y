@@ -118,7 +118,7 @@ multiplicative_expr: term {printf("multiplicative_expr -> term\n");}
 term: var {printf("term -> var\n");}
 	| NUMBER {printf("term -> NUMBER\n");}
 	| L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
-	| IDENT L_PAREN expression R_PAREN {printf("term -> IDENT L_PAREN expression R_PAREN\n");}
+	| IDENT L_PAREN expressions R_PAREN {printf("term -> IDENT L_PAREN expressions R_PAREN\n");}
 	| MINUS var {printf("term -> MINUS var\n");}
 	| MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
 	| MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
