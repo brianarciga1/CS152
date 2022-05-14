@@ -121,7 +121,7 @@ term: var {printf("term -> var\n");}
 	;
 
 
-vars: var {printf("vars -> var\n");}
+vars: /*empty*/ {printf("vars -> epsilon\n");}
 	| var COMMA vars {printf("vars -> var COMMA vars\n");}
 	;
 var: IDENT {printf("var -> IDENT\n");}
