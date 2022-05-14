@@ -122,8 +122,7 @@ term: var {printf("term -> var\n");}
 
 
 vars: /*empty*/ {printf("vars -> epsilon\n");}
-	| expression {printf("vars-> expression\n");}
-	| expression COMMA vars {printf("vars -> expression COMMA vars\n");}
+	| var COMMA vars {printf("vars -> var COMMA vars\n");}
 	;
 var: IDENT {printf("var -> IDENT\n");}
 	| IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
