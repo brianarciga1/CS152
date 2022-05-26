@@ -6,7 +6,6 @@
  #include <map>
  #include <string.h>
  #include <set>
- //te
 
 
  int tempCount = 0;
@@ -35,6 +34,14 @@
 %union{
   int num_val;
   char* id_val;
+  struct S {
+  	char* code;
+  } statement;
+  struct E {
+  	char* place;
+	char *code;
+	bool arr;
+  } expression;
 } // union of all the data type used by vvlval
 
 %error-verbose
@@ -42,26 +49,58 @@
 %token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN 
 %token <num_val> NUMBER
 %token <id_val> IDENT
-%left MINUS ADD MULT DIV MOD
-%left EQ NEQ LT GT LTE GTE
-%left AND OR
+%type <expression> function FuncIdent declarations declaration vars var expressions expression Ident /*identifiers*/
+%type <expression> bool_expr relation_and_expr relation_expr_inv relation_expr comp multiplicative-expr term
+%type <statement> statements statement
+
+%left ASSIGN EQ NEQ LT LTE GT GTE ADD MINUS MULT DIV MOD AND OR
 %right NOT
-%right ASSIGN
 
-
-%% 
+%%
 /*PROGRAM*/
-prog_start: functions { printf("prog_start -> functions\n");}
-	| error {yyerrok; yyclearin;}
-	;
+prog_start:    %empty
+    {
+    	if (!mainFunc){
+		printf("No main function was declared!\n");
+	}
+    }
+    | function prog_start
+    {
+    }
+    ;
+
+/*FUNCTION*/
+function: FUNCTION FuncIdent SEMICOLON BEGINPARAMS declarations ENDPARAMS BEGINLOCALS declarations ENDLOCALS BEGINBODY statements ENDBODY
+    {
+	std::string temp = "func ";
+	temp.append($2.place);
+	temp.append("\n");
+	std::string s = $2.place;
+	if( s == "main"){
+		mainFunc = true;
+	}
+	temp.append($5.code);
+	std::string decs = $5.code;
+	int decNum = 0;
+	while(decs.find(".") != std::string::npos){
+		int pos = decs.find(".");
+		decs.replace(pos, 1, "=");
+		std::string part = ", $" + std::to_string(decNum) + "\n";
+		decNum++;
+		decs.replace(decs.find("\n", pos), 1, part);
+	}
+	temp.append(decs);
 	
-/*FUNCTION*/	
-functions: /*empty*/ {printf("functions -> epsilon\n");}
-	| function functions	{printf("functions -> function functions\n");}
-        ;
-function: FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
-	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
-        ;
+	temp.append($8.code);
+	std::string statements = $11.code;
+	if (statements.find("continue") != std::string::npos){
+		printf("ERROR: Continue outside loop in function %s\n", $2.place);
+	}
+	temp.append(statements);
+	temp.append("endfunc\n\n");
+	printf(temp.c_str());
+    }
+    ;
 
 /*DECLARATION*/
 declarations: /*empty*/ {printf("declarations -> epsilon\n");}
@@ -158,17 +197,22 @@ var: IDENT {printf("var -> IDENT\n");}
 
 %%
 
-int main(int argc, char **argv) {
-   if (argc > 1) {
-      yyin = fopen(argv[1], "r");
-      if (yyin == NULL){
-         printf("syntax: %s filename\n", argv[0]);
-      }//end if
-   }//end if
-   yyparse(); // Calls yylex() for tokens.
-   return 0;
+void yyerror(const char* msg)
+{
+	extern int yylineno; // defined and maintained in lex file
+	extern char *yytext; // defined and maintained in lex file
+	printf("%s on line %d at char %d at symbol \"%s\"\n", msg, yylineno, currPos, yytext);
+	exit(1);
 }
 
-void yyerror(const char *msg) {
-   printf("** Line %d, position %d: %s\n", currLine, currPos, msg);
+std::string new_temp(){
+	std::string t = "t" + std::to_string(tempCount);
+	tempCount++;
+	return t;
+}
+
+std::string new_label(){
+	std::string l = "L" + std::to_string(labelCount);
+	labelCount++;
+	return l;
 }
