@@ -217,11 +217,44 @@ $$.code = strdup(temp.c_str());
 $$.place = strdup("");
 }
 ;
-		
-/*IDENTIFIER*/
-identifiers: IDENT {printf("identifiers -> IDENT\n");}
-	| IDENT COMMA identifiers {printf("identifiers -> IDENT COMMA identifiers");}
-	;
+
+/*FUNCIDENT DONE*/
+FuncIdent: IDENT
+    {
+    	if (funcs.find($1) != funcs.end()) {
+		printf("function name %s already declared.\n", $1);
+	}
+	else {
+		funcs.insert($1);
+	}
+	$$.place = strdup($1);
+	$$.code = strdup("");
+    }
+    ;
+    
+/*IDENT CHECK AGAIN*/
+Idents: Ident
+    {
+    	$$.place = strdup($1.place);
+	$$.code = strdup("");
+    }
+    | Ident COMMA Idents
+    {
+    	std::string temp;
+	temp.append($1.place);
+	temp.append("|");
+	temp.append($3.place);
+	$$.place = strdup(temp.c_str());
+	$$.code = strdup("");
+    }
+    ;
+    
+Ident: IDENT
+    {
+    	$$.place = strdup($1);
+	$$.code = strdup("");
+    }
+    ;
 
 /*STATEMENT*/
 statements: /*empty*/ {printf("statements -> epsilon\n");}
