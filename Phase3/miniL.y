@@ -69,7 +69,7 @@ prog_start:    %empty
     }
     ;
 
-/*FUNCTION* DONE/
+/*FUNCTION DONE*/
 function: FUNCTION FuncIdent SEMICOLON BEGINPARAMS declarations ENDPARAMS BEGINLOCALS declarations ENDLOCALS BEGINBODY statements ENDBODY
     {
 	std::string temp = "func ";
@@ -102,7 +102,7 @@ function: FUNCTION FuncIdent SEMICOLON BEGINPARAMS declarations ENDPARAMS BEGINL
     }
     ;
 
-/*DECLARATION* DONE/
+/*DECLARATION DONE*/
 declarations: declaration SEMICOLON declarations
     {
     	std::string temp;
