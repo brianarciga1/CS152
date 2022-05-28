@@ -257,9 +257,100 @@ Ident: IDENT
     ;
 
 /*STATEMENT*/
-statements: /*empty*/ {printf("statements -> epsilon\n");}
-	| statement SEMICOLON statements {printf("statement SEMICOLON statements\n");}
-        ;
+statements: statement SEMICOLON statements
+    {
+    	std::string temp;
+	temp.append($1.code);
+	temp.append($3.code);
+	$$.code = strdup(temp.c_str());
+    }
+    | statement SEMICOLON
+    {
+    	$$.code = strdup($1.code);
+    }
+    ;
+
+statement: var ASSIGN expression
+    {
+    	std::string temp;
+	temp.append($1.code);
+	temp.append($3.code);
+	std::string middle = $3.place;
+	if ($1.arr && $3.arr) {
+		temp += "[]= ";
+	}
+	else if ($1.arr) {
+		temp += "[]= ";
+	}
+	else if ($3.arr) {
+		temp += "= ";
+	}
+	else {
+		temp += "= ";
+	}
+	temp.append($1.place);
+	temp.append(", ");
+	temp.append(middle);
+	temp += "\n";
+	$$.code = strdup(temp.c_str());
+    }
+    | IF bool_expr THEN statements ENDIF
+    {
+    	std::string ifS = new_label();
+	std::string after = new_label();
+	std::string temp;
+	temp.append($2.code);
+	temp = temp + "?:= " + ifS + ", " + $2.place + "\n"; //if true, jump to :ifS and do code from $4
+	temp = temp + ":= " + after + "\n"; //reached if above not true, skips $4 code by jumping to 12
+	temp = temp + ": " + ifS + "\n";
+	temp.append($4.code);
+	temp = temp + ": " + after + "\n";
+	$$.code = strdup(temp.c_str());
+    }
+    //////////////////////
+    | IF  bool_expr THEN statements ELSE statements ENDIF
+    {
+    	std::string ifS = new_label();
+	std::string after = new_label();
+	std::string temp;
+	temp.append($2.code);
+	temp = temp + "?:= " + ifS + ", " + $2.place + "\n";
+	temp.append($6.code);
+	temp = temp + ":= " + after + "\n";
+	temp = temp + ": " + ifS + "\n";
+	temp.append($4.code);
+	temp = temp + ": " + after + "\n";
+	$$.code = strdup(temp.c_str());
+    }
+    |  WHILE bool_expr BEGINLOOP statements ENDLOOP
+    {
+    	std::string temp;
+	std::string begin = new_label();
+	std::string inner = new_label();
+	std::string after = new_label();
+	std::string code = $4.code;
+	size_t pos = code.find("continue");
+	while (pos != std::string::npos) {
+		code.replace(pos, 8, ":= " + begin);
+		pos = code.find("continue");
+	}
+	temp.append(": ");
+	temp += begin + "\n"; //defines start of while loop
+	temp.append($2.code);
+	temp += "?:= " + inner + ", "; //if true, jump to code
+	temp.append($2.place);
+	temp.append("\n");
+	temp += ":= " + after + "\n";
+	temp += ": " + inner + "\n";
+	temp.append(code);
+	temp += ":= " + begin + "\n";
+	temp += ": " + after + "\n";
+	$$.code = strdup(temp.c_str());
+     }
+    
+	
+	
+	
 statement: var ASSIGN expression {printf("statement -> var ASSIGN expression\n");}
 	| IF bool_expr THEN statements END_IF {printf("statement -> IF bool_expr THEN statements END_IF\n");}
 	| IF bool_expr THEN statements ELSE statements END_IF {printf("statement -> IF bool_expr THEN statements ELSE statements END_IF\n");}
