@@ -523,13 +523,38 @@ relation_expr: expression comp expression /*done*/
     ;
 
 /*COMP*/
-comp: EQ {printf("comp -> EQ\n");}
-	| NEQ {printf("comp -> NEQ\n");}
-	| LT {printf("comp -> LT\n");}
-	| GT {printf("comp -> GT\n");}
-	| LTE {printf("comp -> LTE\n");}
-	| GTE {printf("comp -> GTE\n");}
-	;
+comp: EQ   //line 533
+    {
+    	$$.code = strdup("");
+	$$.place = strdup("== ");
+    }
+    | NEQ
+    {
+    	$$.code = strdup("");
+	$$.place = strdup("!= ");
+    }
+    | LT
+    {
+    	$$.code = strdup("");
+	$$.place = strdup("< ");
+    }
+    | LTE
+    {
+    	$$.code = strdup("");
+	$$.place = strdup("<= ");
+    }
+    | GT
+    {
+    	$$.code = strdup("");
+	$$.place = strdup("> ");
+    }
+    | GTE
+    {
+    	$$.code = strdup("");
+	$$.place = strdup(">= ");
+    }
+    ;
+    	
 	
 /*EXPRESSION*/
 expressions: expression
@@ -554,6 +579,13 @@ expressions: expression
 	$$.place = strdup("");
      }
      ;
+expression: multiplicative_expr ADD expression
+     {
+     std::string temp;
+     std::string dst = new_temp();
+     temp.append($1.code);
+     temp.append($3.code);
+     
 	
 	
 /*MULTIPLICATIVE-EXPR*/	//NOT COMPLETE
