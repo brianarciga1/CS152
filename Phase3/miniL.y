@@ -653,10 +653,38 @@ term: var {printf("term -> var\n");}
 	| MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
 	;
 
-/*VAR*/
-vars: var {printf("vars -> var\n");}
-	| var COMMA vars {printf("vars -> var COMMA vars\n");}
-	;
+/*VAR*/ //LINE 794
+vars: var
+    {
+    	std::string temp;
+	temp.append($1.code);
+	if ($1.arr) {
+	    temp.append(".[]| "); //CHECK,COULD BE WRONG
+	} else {
+	    temp.append(".| ");
+	}
+	temp.append($1.place);
+	temp.append("\n");
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup("");
+    }
+    | var COMMA vars
+    {
+    	std::string temp;
+	temp.append($1.code);
+	if ($1.arr) {
+	    temp.append(".[]| ");
+	} else {
+	    temp.append(".| ");
+	}
+	temp.append($1.place);
+	temp.append("\n");
+	temp.append($3.code);
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup("");
+    }
+    ;
+	
 var: Ident  //LINE 825
     {
     	std::string temp;
