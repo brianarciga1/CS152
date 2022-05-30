@@ -532,20 +532,40 @@ comp: EQ {printf("comp -> EQ\n");}
 	;
 	
 /*EXPRESSION*/
-expressions: /*empty*/ {printf("expressions -> epsilon\n");}
-	| expression {printf("expressions -> expression\n");}
-	| expression COMMA expressions {printf("expressions -> expression COMMA expressions\n");};
-expression: multiplicative_expr {printf("expression -> multiplicative_expr\n");}
-	| multiplicative_expr ADD expression {printf("expression -> multiplicative_expr ADD expression\n");}
-	| multiplicative_expr MINUS expression {printf("expression -> multiplicative_expr MINUS expression\n");}      
-	; 
+expressions: expression
+    {
+	std::string temp;
+	temp.append($1.code);
+	temp.append("param ");
+	temp.append($1.place);
+	temp.append("\n");
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup("");
+    }
+    | expression COMMA expressions
+    {
+    	std::string temp;
+	temp.append($1.code);
+	temp.append("param ");
+	temp.append($1.place);
+	temp.appned("\n");
+	temp.append($3.code);
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup("");
+     }
+     ;
 	
-/*MULTIPLICATIVE-EXPR*/	
-multiplicative_expr: term {printf("multiplicative_expr -> term\n");}
-	| term MULT term {printf("multiplicative_expr -> term MULT term\n");}
-	| term DIV term {printf("multiplicative_expr -> term DIV term\n");}
-	| term MOD term {printf("multiplicative_expr -> term MOD term\n");}   
-	;
+	
+/*MULTIPLICATIVE-EXPR*/	//NOT COMPLETE
+multiplicative_expr: Term MULT multiplicative_expr
+    {
+	std::string temp;
+	std::string dst = new_temp();
+	temp.append($1.code);
+	temp.append($3.code);
+	temp.append(". ");
+	
+	
 	
 /*TERM*/	
 term: var {printf("term -> var\n");}
