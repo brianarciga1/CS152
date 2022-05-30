@@ -523,7 +523,7 @@ relation_expr: expression comp expression /*done*/
     ;
 
 /*COMP*/
-comp: EQ   //line 533
+comp: EQ 
     {
     	$$.code = strdup("");
 	$$.place = strdup("== ");
@@ -588,7 +588,7 @@ expression: multiplicative_expr ADD expression
      
 	
 	
-/*MULTIPLICATIVE-EXPR*/	//NOT COMPLETE
+/*MULTIPLICATIVE-EXPR*/	//Line 625
 multiplicative_expr: Term MULT multiplicative_expr
     {
 	std::string temp;
@@ -596,8 +596,52 @@ multiplicative_expr: Term MULT multiplicative_expr
 	temp.append($1.code);
 	temp.append($3.code);
 	temp.append(". ");
-	
-	
+	temp.append(dst);
+	temp.append("\n");
+	temp += "* " + dst + ", ";
+	temp.append($1.place);
+	temp += ", ";
+	temp.append($3.place);
+	temp += "\n";
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup(dst.c_str());
+    }
+    | term DIV multiplicative_expr
+    {
+    	std::string temp;
+	std::string dst = new_temp();
+	temp.append($1.code);
+	temp.append($3.code);
+	temp.append(". ");
+	temp.append(dst);
+	temp.append("\n");
+	temp += "/ " + dst + ", ";
+	temp.append($.place);
+	temp += ", ";
+	temp.append($3.place);
+	temp += "\n";
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup(dst.c_str());
+    }
+    | term MOD multiplicative_expr //LINE 659 guessing
+    {
+    	std::string temp;
+	std::string dst = new_temp();
+	temp.append($1.code);
+	temp.append($3.code);
+	temp.append(". ");
+	temp.append(dst);
+	temp.append("\n");
+	temp += "% " + dst + ", ";
+	temp.append($.place);
+	temp += ", ";
+	temp.append($3.place);
+	temp += "\n";
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup(dst.c_str());
+     }
+     ;
+    	
 	
 /*TERM*/	
 term: var {printf("term -> var\n");}
