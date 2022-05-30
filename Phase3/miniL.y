@@ -657,9 +657,36 @@ term: var {printf("term -> var\n");}
 vars: var {printf("vars -> var\n");}
 	| var COMMA vars {printf("vars -> var COMMA vars\n");}
 	;
-var: IDENT {printf("var -> IDENT\n");}
-	| IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET {printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
-	;
+var: Ident  //LINE 825
+    {
+    	std::string temp;
+	std::string ident = $1.place;
+	if (funcs.find(ident funcs.end() && varTemp.find(ident) == varTemp.end()){
+	    printf("Identifier %s is not declared.\n", ident.c_str());
+	} else if (arrSize[ident] > 1) {
+	    printf("Did not provide index for array Identifier %s.\n", ident.c_str());
+	}
+	$$.code = strdup("");
+	$$.place = strdup(ident.c_str());
+	$$.arr = false;
+    }
+    | Ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    {
+    	std::string temp;
+	std::string ident = $1.place;
+	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
+	    printf("Identifier %s is not declared.\n", ident.c_str());
+	} else if (arrSize[ident] == 1) {
+	    printf("Provided index for non-array Identifier %s.\n", ident.c_str());
+        }
+	temp.append($1.place);
+	temp.append(", ");
+	temp.append($3.place);
+	$$.code = strdup($3.code);
+	$$.place = strdup(temp.c_str());
+	$$.arr = true;
+    }
+    ;
 
 %%
 
