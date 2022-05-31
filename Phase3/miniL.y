@@ -643,10 +643,33 @@ multiplicative_expr: Term MULT multiplicative_expr
      ;
     	
 	
-/*TERM*/ /*var, NUMBER, L_PAREN expression R_PAREN, IDENT L_PAREN expressions R_PAREN, MINUS var, MINUS NUMBER, MINUS L_PAREN expression R_PAREN*/	
+/*TERM*/ 	
 term: var
     {
-    	
+    	std::string dst = new_temp();
+	std::string temp;
+	if ($1.arr) {
+	    temp.append($1.code);
+	    temp.append(". ");
+	    temp.append(dst);
+	    temp.append("\n");
+	    temp += "=[] " + dst + ", ";
+	    temp.append($1.place);
+	    temp.append("\n");
+	} else {
+	    temp.append(". ");
+	    temp.append(dst);
+	    temp.append("\n");
+	    temp = temp + "= " + dst + ", ";
+	    temp.append($1.place);
+	    temp.append("\n");
+	    temp.append($1.code);
+	}
+	if (varTemp.find($1.place) != varTemp.end()) {
+	    varTemp[$1.place] = dst;
+	}
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup(dst.c_str());
     }
     | NUMBER
     {
