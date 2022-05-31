@@ -648,7 +648,7 @@ term: var
     {
     	
     }
-    | NUMBER //LINE 761 DONE
+    | NUMBER
     {
     	std::string dst = new_temp();
 	std::string temp;
@@ -659,7 +659,7 @@ term: var
 	$$.code = strdup(temp.c_str());
 	$$.place = strdup(dst.c_str());
     }
-    | L_PAREN expression R_PAREN //Line 772 DONE
+    | L_PAREN expression R_PAREN
     {
     	$$.code = strdup($2.code);
 	$$.place = strdup($2.place);
@@ -674,11 +674,44 @@ term: var
     }
     | MINUS var
     {
+    	std::string dst = new_temp();
+	std::string temp;
+	if($2.arr) {
+	    temp.append($2.code);
+	    temp.append(". ");
+	    temp.append(dst);
+	    temp.append("\n");
+	    temp += "=[] " + dst + ", ";
+	    temp.append($2.place);
+	    temp.append("\n");
+	} else {
+	    temp.append(". ");
+	    temp.append(dst);
+	    temp.append("\n");
+	    temp = temp + "= " + dst + ", ";
+	    temp.append($2.place);
+	    temp.append("\n");
+	    temp.append($2.code);
+	}
+	if (varTemp.find($2.place) != varTemp.end()){
+	    varTemp[$2.place] = dst;
+	}
+	temp += "* " + dst + ", " + dst + ", -1\n";
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup(dst.c_str());
     }
     | MINUS NUMBER
     {
+    	std::string dst = new_temp();
+	std::string temp;
+	temp.append(". ");
+	temp.append(dst);
+	temp.append("\n");
+	temp = temp + "= " + dst + ", -" + std::to_string($2) + "\n";
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup(dst.c_str());
     }
-    | MINUS L_PAREN expression R_PAREN //LINE 722 DONE
+    | MINUS L_PAREN expression R_PAREN
     {
     	std::string temp;
 	temp.append($3.code);
