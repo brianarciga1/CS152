@@ -643,15 +643,57 @@ multiplicative_expr: Term MULT multiplicative_expr
      ;
     	
 	
-/*TERM*/	
-term: var {printf("term -> var\n");}
-	| NUMBER {printf("term -> NUMBER\n");}
-	| L_PAREN expression R_PAREN {printf("term -> L_PAREN expression R_PAREN\n");}
-	| IDENT L_PAREN expressions R_PAREN {printf("term -> IDENT L_PAREN expressions R_PAREN\n");}
-	| MINUS var {printf("term -> MINUS var\n");}
-	| MINUS NUMBER {printf("term -> MINUS NUMBER\n");}
-	| MINUS L_PAREN expression R_PAREN {printf("term -> MINUS L_PAREN expression R_PAREN\n");}
-	;
+/*TERM*/ /*var, NUMBER, L_PAREN expression R_PAREN, IDENT L_PAREN expressions R_PAREN, MINUS var, MINUS NUMBER, MINUS L_PAREN expression R_PAREN*/	
+term: var
+    {
+    	
+    }
+    | NUMBER //LINE 761 DONE
+    {
+    	std::string dst = new_temp();
+	std::string temp;
+	temp.append(". ");
+	temp.append(dst);
+	temp.append("\n");
+	temp = temp + "= " + dst + ", " + std::to_string($1) = "\n";
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup(dst.c_str());
+    }
+    | L_PAREN expression R_PAREN //Line 772 DONE
+    {
+    	$$.code = strdup($2.code);
+	$$.place = strdup($2.place);
+    }
+    | IDENT L_PAREN expressions R_PAREN //Line 777 NOTDONE
+    {
+    	std::string temp;
+	std::string func = $1.place;
+	if (funcs.find(func) == funcs.end()){
+	
+	}
+    }
+    | MINUS var
+    {
+    }
+    | MINUS NUMBER
+    {
+    }
+    | MINUS L_PAREN expression R_PAREN //LINE 722 DONE
+    {
+    	std::string temp;
+	temp.append($3.code);
+	temp.append("* ");
+	temp.append($3.place);
+	temp.append(", ");
+	temp.append($3.place);
+	temp.append(", -1\n");
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup($3.place);
+    }
+    ;
+    
+    
+    
 
 /*VAR*/ //LINE 794
 vars: var
