@@ -691,9 +691,16 @@ term: var
     {
     	std::string temp;
 	std::string func = $1.place;
-	if (funcs.find(func) == funcs.end()){
-	
+	if (funcs.find(func) == funcs.end()){ 
+	    printf("Calling undeclared function %s.\n", func.c_str());
 	}
+	std::string dst = new_temp();
+	temp.append($3.code);
+	temp += ". " + dst + "\ncall ";
+	temp.append($1.place);
+	temp += ", " + dst + "\n";
+	$$.code = strdup(temp.c_str());
+	$$.place = strdup(dst.c_str());
     }
     | MINUS var
     {
