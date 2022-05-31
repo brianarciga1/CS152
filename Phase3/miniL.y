@@ -579,14 +579,42 @@ expressions: expression
 	$$.place = strdup("");
      }
      ;
-expression: multiplicative_expr ADD expression
+expression: multiplicative_expr
      {
-     std::string temp;
-     std::string dst = new_temp();
-     temp.append($1.code);
-     temp.append($3.code);
-     
-	
+        $$.code = strdup($1.code);
+	$$.place = strdup($1.place);
+     }
+     | multiplicative_expr ADD expression
+     {
+         std::string temp;
+         std::string dst = new_temp();
+         temp.append($1.code);
+         temp.append($3.code);
+	 temp += ". " + dst + "\n"; 
+	 temp += "+ " + dst + ", ";  //guess
+	 temp.append($1.place);  //guess
+	 temp += ", "; 
+	 temp.append($3.place);
+	 temp += "\n";
+	 $$.code = strdup(temp.c_str());
+	 $$.place = strdup(dst.c_str());
+     }
+     | multiplicative_expr MINUS expression
+     {
+         std::string temp;
+	 std::string dst = new_temp();
+	 temp.append($1.code);
+	 temp.append($3.code);
+	 temp += ". " + dst + "\n";
+	 temp += "- " + dst + ", ";
+	 temp.append($1.place);
+	 temp += ", ";
+	 temp .append($3.place);
+	 temp += "\n";
+	 $$.code = strdup(temp.c_str());
+	 $$.place = strdup(dst.c_str());
+     }
+     ;	
 	
 /*MULTIPLICATIVE-EXPR*/	//Line 625
 multiplicative_expr: Term MULT multiplicative_expr
