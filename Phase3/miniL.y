@@ -118,7 +118,7 @@ declarations: declaration SEMICOLON declarations
     }
     ;
     
-declaration: Idents COLON INTEGER
+declaration: identifiers COLON INTEGER //Ident
     {
     	int left = 0;
 	int right = 0;
@@ -823,7 +823,7 @@ vars: var
     }
     ;
 	
-var: Ident  //LINE 825
+var: Ident  //Ident
     {
     	std::string temp;
 	std::string ident = $1.place;
