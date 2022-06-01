@@ -50,7 +50,7 @@
 %token <num_val> NUMBER
 %token <id_val> IDENT
 %type <expression> function FuncIdent declarations declaration vars var expressions expression identifiers
-%type <expression> bool_expr relation_and_expr relation_expr comp multiplicative-expr term
+%type <expression> bool_expr relation_and_expr relation_expr comp multiplicative_expr term
 %type <statement> statements statement
 
 %left ASSIGN EQ NEQ LT LTE GT GTE ADD MINUS MULT DIV MOD AND OR
