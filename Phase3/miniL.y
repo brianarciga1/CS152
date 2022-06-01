@@ -823,7 +823,7 @@ vars: var
     }
     ;
 	
-var: Ident  //Ident
+var: IDENT  //Ident
     {
     	std::string temp;
 	std::string ident = $1.place;
@@ -836,7 +836,7 @@ var: Ident  //Ident
 	$$.place = strdup(ident.c_str());
 	$$.arr = false;
     }
-    | Ident L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    | IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET
     {
     	std::string temp;
 	std::string ident = $1.place;
