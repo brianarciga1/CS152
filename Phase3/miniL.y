@@ -412,7 +412,7 @@ statement: var ASSIGN expression
     }
     ;
 	
-bool_expr: relation_and_expr
+bool_expr: relation_and_expr //done
     {
         $$.code = strdup($1.code);
         $$.place = strdup($1.place);
@@ -522,7 +522,7 @@ relation_expr: expression comp expression /*done*/
     }
     ;
 
-/*COMP*/
+/*COMP done*/
 comp: EQ 
     {
     	$$.code = strdup("");
@@ -556,7 +556,7 @@ comp: EQ
     ;
     	
 	
-/*EXPRESSION*/
+/*EXPRESSION done*/
 expressions: expression
     {
 	std::string temp;
@@ -667,6 +667,11 @@ multiplicative_expr: Term MULT multiplicative_expr
 	temp += "\n";
 	$$.code = strdup(temp.c_str());
 	$$.place = strdup(dst.c_str());
+     }
+     | term
+     {
+     	$$.code = strdup($1.code);
+	$$.place = strdup($1.place);
      }
      ;
     	
@@ -822,7 +827,7 @@ var: Ident  //LINE 825
     {
     	std::string temp;
 	std::string ident = $1.place;
-	if (funcs.find(ident funcs.end() && varTemp.find(ident) == varTemp.end()){
+	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
 	    printf("Identifier %s is not declared.\n", ident.c_str());
 	} else if (arrSize[ident] > 1) {
 	    printf("Did not provide index for array Identifier %s.\n", ident.c_str());
