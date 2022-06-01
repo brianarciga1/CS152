@@ -23,7 +23,7 @@
  "END_LOOP", "CONTINUE", "READ", "WRITE", "AND", "OR", "NOT", "TRUE", "FALSE", "RETURN", "MINUS", "ADD", "MULT", "DIV", "MOD", 
  "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "SEMICOLON", "COLON", "COMMA", "L_PAREN", "R_PAREN", "L_SQUARE_BRACKET", "R_SQUARE_BRACKET", "ASSIGN", 
  "functions", "function", "declarations", "declaration", "identifiers", "statements", "statement", "bool_expr", 
- "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative-expr", "term", "vars", "var"};
+ "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
  
  void yyerror(const char *msg);
  int yylex();
@@ -49,7 +49,7 @@
 %token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN 
 %token <num_val> NUMBER
 %token <id_val> IDENT
-%type <expression> function FuncIdent declarations declaration vars var expressions expression Ident /*identifiers*/
+%type <expression> function FuncIdent declarations declaration vars var expressions expression identifiers
 %type <expression> bool_expr relation_and_expr relation_expr comp multiplicative-expr term
 %type <statement> statements statement
 
@@ -70,7 +70,7 @@ prog_start:    %empty
     ;
 
 /*FUNCTION DONE*/
-function: FUNCTION FuncIdent SEMICOLON BEGINPARAMS declarations ENDPARAMS BEGINLOCALS declarations ENDLOCALS BEGINBODY statements ENDBODY
+function: FUNCTION FuncIdent SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
     {
 	std::string temp = "func ";
 	temp.append($2.place);
@@ -297,7 +297,7 @@ statement: var ASSIGN expression
 	temp += "\n";
 	$$.code = strdup(temp.c_str());
     }
-    | IF bool_expr THEN statements ENDIF
+    | IF bool_expr THEN statements END_IF
     {
     	std::string ifS = new_label();
 	std::string after = new_label();
@@ -311,7 +311,7 @@ statement: var ASSIGN expression
 	$$.code = strdup(temp.c_str());
     }
     //////////////////////
-    | IF  bool_expr THEN statements ELSE statements ENDIF
+    | IF  bool_expr THEN statements ELSE statements END_IF
     {
     	std::string ifS = new_label();
 	std::string after = new_label();
@@ -617,7 +617,7 @@ expression: multiplicative_expr
      ;	
 	
 /*MULTIPLICATIVE-EXPR*/	//Line 625
-multiplicative_expr: Term MULT multiplicative_expr
+multiplicative_expr: term MULT multiplicative_expr
     {
 	std::string temp;
 	std::string dst = new_temp();
