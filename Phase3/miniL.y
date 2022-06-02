@@ -854,12 +854,8 @@ var: IDENT  //Ident
 
 %%
 
-void yyerror(const char* msg)
-{
-	extern int yylineno; // defined and maintained in lex file
-	extern char *yytext; // defined and maintained in lex file
-	printf("%s on line %d at char %d at symbol \"%s\"\n", msg, yylineno, currPos, yytext);
-	exit(1);
+void yyerror(const char *msg) {
+   printf("** Line %d, position %d: %s\n", currLine, currPos, msg);
 }
 
 std::string new_temp(){
