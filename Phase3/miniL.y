@@ -1,6 +1,5 @@
 /* cs152-miniL phase3 */
 %{
- #define YY_NO_INPUT
  #include <stdio.h>
  #include <stdlib.h>
  #include <map>
@@ -45,7 +44,7 @@
 } // union of all the data type used by vvlval
 
 %error-verbose
-%start prog_start
+%start program
 %token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN 
 %token <num_val> NUMBER
 %token <id_val> IDENT
@@ -58,13 +57,13 @@
 
 %%
 /*PROGRAM*/
-prog_start:    %empty
+program:    %empty
     {
     	if (!mainFunc){
 		printf("No main function was declared!\n");
 	}
     }
-    | function prog_start
+    | function program
     {
     }
     ;
