@@ -14,7 +14,7 @@
  extern int currPos;
  std::map<std::string, std::string> varTemp;
  std::map<std::string, int> arrSize;
- FILE * yyin;
+ extern FILE * yyin;
  
  bool mainFunc = false;
  std::set<std::string> funcs;
