@@ -1,62 +1,63 @@
 /* cs152-miniL phase3 */
 %{
- #include <stdio.h>
- #include <stdlib.h>
- #include <map>
- #include <string.h>
- #include <set>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <map>
+    #include <string.h>
+    #include <set>
+    
+    void yyerror(const char* msg);
+    extern int currLine;
+    extern int currPos;
+    bool mainFunc = false;
+    int numTemp = 0;
+    int numLabel = 0;
+    extern FILE* yyin;
+    unsigned int tempCount = 0;
+    unsigned int labelCount = 0;
+    std::map<std::string, std::string> varTemp;
+    std::map<std::string, int> arrSize;
+    std::set<std::string> funcs;
+    std::set<std::string> reserved {"NUMBER", "IDENT", "FUNCTION", "BEGIN_PARAMS", "END_PARAMS", "BEGIN_LOCALS", "END_LOCALS", "BEGIN_BODY", "END_BODY", 
+    "INTEGER", "ARRAY", "ENUM", "OF", "IF", "THEN", "END_IF", "ELSE", "WHILE", "DO", "BEGIN_LOOP", "END_LOOP", "CONTINUE", "READ", "WRITE", "AND", "OR", 
+    "NOT", "TRUE", "FALSE", "RETURN", "MINUS", "ADD", "MULT", "DIV", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "SEMICOLON", "COLON", "COMMA", "L_PAREN", 
+    "R_PAREN", "L_SQUARE_BRACKET", "R_SQUARE_BRACKET", "ASSIGN", "functions", "function", "declarations", "declaration", "identifiers", "statements", 
+    "statement", "bool_expr", "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
 
-
- int tempCount = 0;
- int labelCount = 0;
- extern int currLine;
- extern int currPos;
- std::map<std::string, std::string> varTemp;
- std::map<std::string, int> arrSize;
- extern FILE * yyin;
- 
- bool mainFunc = false;
- std::set<std::string> funcs;
- std::set<std::string> reserved {"NUMBER", "IDENT", "FUNCTION", "BEGIN_PARAMS", "END_PARAMS", "BEGIN_LOCALS", "END_LOCALS", 
- "BEGIN_BODY", "END_BODY", "INTEGER", "ARRAY", "ENUM", "OF", "IF", "THEN", "END_IF", "ELSE", "FOR", "WHILE", "DO", "BEGIN_LOOP", 
- "END_LOOP", "CONTINUE", "READ", "WRITE", "AND", "OR", "NOT", "TRUE", "FALSE", "RETURN", "MINUS", "ADD", "MULT", "DIV", "MOD", 
- "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "SEMICOLON", "COLON", "COMMA", "L_PAREN", "R_PAREN", "L_SQUARE_BRACKET", "R_SQUARE_BRACKET", "ASSIGN", 
- "functions", "function", "declarations", "declaration", "identifiers", "statements", "statement", "bool_expr", 
- "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
- 
- void yyerror(const char* msg);
- extern int yylex(); //void
- std::string new_temp();
- std::string new_label();
+    int yylex();
+    std::string new_temp();
+    std::string new_label();
 %}
 
 %union{
-  int num_val;
-  char* id_val;
-  struct S {
-  	char* code;
-  } statement;
-  struct E {
-  	char* place;
-	char* code;
-	bool arr;
-  } expression;
-} // union of all the data type used by vvlval
+    int num_val;
+    char* id_val;
+    struct S {
+            char* code;
+    }   statement;
+    struct E {
+            char* place;
+            char* code;
+            bool arr;
+    }   expression;
+}
 
 %error-verbose
 %start program
-%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE FOR WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN MINUS ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN 
-%token <num_val> NUMBER
+%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE TRUE FALSE RETURN SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
 %token <id_val> IDENT
-%type <expression> function FuncIdent declarations declaration vars var expressions expression identifiers
-%type <expression> bool_expr relation_and_expr relation_expr comp multiplicative_expr term
-%type <statement> statements statement
-
-%left ASSIGN EQ NEQ LT LTE GT GTE ADD MINUS MULT DIV MOD AND OR
+%token <num_val> NUMBER
+%type <expression> function FuncIdent declarations declaration var vars expressions expression identifiers relation_expr
+%type <expression> bool_expr relation_and_expr multiplicative_expr comp term
+%type <statement> statements statement 
+%left ADD MINUS
+%left EQ NEQ GT GTE LT LTE
 %right NOT
+%left AND OR
+%right ASSIGN
+%left MULT DIV MOD
 
 %%
-/*PROGRAM*/
 program:    %empty
     {
     	if (!mainFunc){
