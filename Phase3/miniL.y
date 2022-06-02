@@ -25,7 +25,7 @@
  "functions", "function", "declarations", "declaration", "identifiers", "statements", "statement", "bool_expr", 
  "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
  
- void yyerror(const char *msg);
+ void yyerror(const char* msg);
  int yylex();
  std::string new_temp();
  std::string new_label();
@@ -39,7 +39,7 @@
   } statement;
   struct E {
   	char* place;
-	char *code;
+	char* code;
 	bool arr;
   } expression;
 } // union of all the data type used by vvlval
