@@ -43,8 +43,8 @@
 %token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE TRUE FALSE RETURN SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
 %token <id_val> IDENT
 %token <num_val> NUMBER
-%type <expression> function FuncIdent declarations declaration var vars expression identifiers chained_exprs relation_expr
-%type <expression> bool_expr relation_and_expr multiplicative_expr optional_exprs comp term
+%type <expression> function FuncIdent declarations declaration var vars expressions expression identifiers relation_expr
+%type <expression> bool_expr relation_and_expr multiplicative_expr comp term
 %type <statement> statements statement 
 %left ADD MINUS
 %left EQ NEQ GT GTE LT LTE
