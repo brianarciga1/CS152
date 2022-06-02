@@ -236,13 +236,13 @@ FuncIdent: IDENT
 /*IDENT CHECK AGAIN*/
 identifiers: IDENT
     {
-    	$$.place = strdup($1.place);
+    	$$.place = strdup($1); //place
 	$$.code = strdup("");
     }
     | IDENT COMMA identifiers
     {
     	std::string temp;
-	temp.append($1.place);
+	temp.append($1); //place
 	temp.append("|");
 	temp.append($3.place);
 	$$.place = strdup(temp.c_str());
@@ -723,14 +723,14 @@ term: var
     | IDENT L_PAREN expressions R_PAREN //Line 777 NOTDONE
     {
     	std::string temp;
-	std::string func = $1.place;
+	std::string func = $1; //place
 	if (funcs.find(func) == funcs.end()){ 
 	    printf("Calling undeclared function %s.\n", func.c_str());
 	}
 	std::string dst = new_temp();
 	temp.append($3.code);
 	temp += ". " + dst + "\ncall ";
-	temp.append($1.place);
+	temp.append($1); //place
 	temp += ", " + dst + "\n";
 	$$.code = strdup(temp.c_str());
 	$$.place = strdup(dst.c_str());
@@ -826,7 +826,7 @@ vars: var
 var: IDENT  //Ident
     {
     	std::string temp;
-	std::string ident = $1.place;
+	std::string ident = strdup($1);
 	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
 	    printf("Identifier %s is not declared.\n", ident.c_str());
 	} else if (arrSize[ident] > 1) {
@@ -839,13 +839,13 @@ var: IDENT  //Ident
     | IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET
     {
     	std::string temp;
-	std::string ident = $1.place;
+	std::string ident = strdup($1);
 	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
 	    printf("Identifier %s is not declared.\n", ident.c_str());
 	} else if (arrSize[ident] == 1) {
 	    printf("Provided index for non-array Identifier %s.\n", ident.c_str());
         }
-	temp.append($1.place);
+	temp.append(ident);
 	temp.append(", ");
 	temp.append($3.place);
 	$$.code = strdup($3.code);
