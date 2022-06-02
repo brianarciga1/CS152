@@ -16,11 +16,14 @@
 
     unsigned int tempCount = 0;
     unsigned int labelCount = 0;
-
     std::map<std::string, std::string> varTemp;
     std::map<std::string, int> arrSize;
     std::set<std::string> funcs;
-    std::set<std::string> reserved { "NUMBER", "IDENT", "RETURN" }; // TODO LIST OF RESERVED KEYWORDS
+    std::set<std::string> reserved {"NUMBER", "IDENT", "FUNCTION", "BEGIN_PARAMS", "END_PARAMS", "BEGIN_LOCALS", "END_LOCALS", "BEGIN_BODY", "END_BODY", 
+    "INTEGER", "ARRAY", "ENUM", "OF", "IF", "THEN", "END_IF", "ELSE", "WHILE", "DO", "BEGIN_LOOP", "END_LOOP", "CONTINUE", "READ", "WRITE", "AND", "OR", 
+    "NOT", "TRUE", "FALSE", "RETURN", "MINUS", "ADD", "MULT", "DIV", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "SEMICOLON", "COLON", "COMMA", "L_PAREN", 
+    "R_PAREN", "L_SQUARE_BRACKET", "R_SQUARE_BRACKET", "ASSIGN", "functions", "function", "declarations", "declaration", "identifiers", "statements", 
+    "statement", "bool_expr", "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
 
     int yylex();
     std::string new_temp();
@@ -28,17 +31,17 @@
 %}
 
 %union{
-    int num_val;
-    char* id_val;
-    struct S {
-            char* code;
-    }   statement;
-    struct E {
-            char* place;
-            char* code;
-            bool arr;
-    }   expression;
-}
+  int num_val;
+  char* id_val;
+  struct S {
+  	char* code;
+  } statement;
+  struct E {
+  	char* place;
+	char* code;
+	bool arr;
+  } expression;
+} // union of all the data type used by vvlval
 
 %error-verbose
 %start program
