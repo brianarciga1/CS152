@@ -267,7 +267,7 @@ statements: statement SEMICOLON statements
 	temp.append($3.code);
 	$$.code = strdup(temp.c_str());
     }
-    | /* statement SEMICOLON empty*/
+    | statement SEMICOLON
     {
     	$$.code = strdup($1.code);
     }
@@ -644,7 +644,7 @@ multiplicative_expr: term MULT multiplicative_expr
 	temp.append(dst);
 	temp.append("\n");
 	temp += "/ " + dst + ", ";
-	temp.append($.place);
+	temp.append($1.place);
 	temp += ", ";
 	temp.append($3.place);
 	temp += "\n";
@@ -661,7 +661,7 @@ multiplicative_expr: term MULT multiplicative_expr
 	temp.append(dst);
 	temp.append("\n");
 	temp += "% " + dst + ", ";
-	temp.append($.place);
+	temp.append($1.place);
 	temp += ", ";
 	temp.append($3.place);
 	temp += "\n";
