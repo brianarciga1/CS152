@@ -26,7 +26,7 @@
  "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
  
  void yyerror(const char* msg);
- int yylex();
+ extern int yylex();
  std::string new_temp();
  std::string new_label();
 %}
