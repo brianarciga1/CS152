@@ -7,7 +7,7 @@
     void yyerror(const char* msg);
     extern int currLine;
     extern int currPos;
-    bool mainExists = false;
+    bool mainFunc = false;
     int numTemp = 0;
     int numLabel = 0;
     extern FILE* yyin;
@@ -54,16 +54,16 @@
 %left MULT DIV MOD
 
 %%
-program: functions                                              {;}
-        ;
-functions:                                                      
-        {
-                if (!mainExists) {
-                        printf("No main function declared!\n");
-                }
-        }
-        | function functions                                    
-        ;
+program:    %empty
+    {
+    	if (!mainFunc){
+		printf("No main function was declared!\n");
+	}
+    }
+    | function program
+    {
+    }
+    ;
 function: FUNCTION FuncIdent SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
     {
 	std::string temp = "func ";
