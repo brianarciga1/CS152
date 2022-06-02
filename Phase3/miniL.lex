@@ -24,7 +24,7 @@ DIGIT    [0-9]
 "then"            {currPos += yyleng; return THEN;}
 "endif"         {currPos += yyleng; return END_IF;}
 "else"            {currPos += yyleng; return ELSE;}
-"for"            {currPos += yyleng; return FOR;}
+
 "while"            {currPos += yyleng; return WHILE;}
 "do"            {currPos += yyleng; return DO;}
 "beginloop"            {currPos += yyleng; return BEGIN_LOOP;}
