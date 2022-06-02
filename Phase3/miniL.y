@@ -573,7 +573,7 @@ expressions: expression
 	temp.append($1.code);
 	temp.append("param ");
 	temp.append($1.place);
-	temp.appned("\n");
+	temp.append("\n");
 	temp.append($3.code);
 	$$.code = strdup(temp.c_str());
 	$$.place = strdup("");
