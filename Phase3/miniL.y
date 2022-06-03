@@ -2,10 +2,9 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
-    #include <map>
     #include <string.h>
+    #include <map>
     #include <set>
-    
     void yyerror(const char* msg);
     extern int currLine;
     extern int currPos;
@@ -16,11 +15,12 @@
 
     unsigned int tempCount = 0;
     unsigned int labelCount = 0;
+
     std::map<std::string, std::string> varTemp;
     std::map<std::string, int> arrSize;
     std::set<std::string> funcs;
     std::set<std::string> reserved { "NUMBER", "IDENT", "RETURN" }; // TODO LIST OF RESERVED KEYWORDS
-    
+
     int yylex();
     std::string new_temp();
     std::string new_label();
