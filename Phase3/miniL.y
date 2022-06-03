@@ -816,40 +816,36 @@ vars: var
     }
     ;
 	
-var: IDENT                                                      
-        {
-                std::string temp;
-                $$.code = strdup("");
-                std::string ident = strdup($1);
-                if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()) {
-                        printf("Identifier %s is not declared.\n", ident.c_str());
-                }
-                else if (arrSize[ident] > 1) {
-                        printf("Did not provide index for array Identifier %s.\n", ident.c_str());
-                }
-
-                $$.place = strdup(ident.c_str());
-                $$.arr = false; 
+var: IDENT  //Ident
+    {
+    	std::string temp;
+	std::string ident = $1;
+	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
+	    printf("Identifier %s is not declared.\n", ident.c_str());
+	} else if (arrSize[ident] > 1) {
+	    printf("Did not provide index for array Identifier %s.\n", ident.c_str());
+	}
+	$$.code = strdup("");
+	$$.place = strdup(ident.c_str());
+	$$.arr = false;
+    }
+    | IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    {
+    	std::string temp;
+	std::string ident = $1;
+	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
+	    printf("Identifier %s is not declared.\n", ident.c_str());
+	} else if (arrSize[ident] == 1) {
+	    printf("Provided index for non-array Identifier %s.\n", ident.c_str());
         }
-        | IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET       
-        {
-              std::string temp;
-              std::string ident = strdup($1);
-              if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()) {
-                      printf("Identifier %s is not declared.\n", ident.c_str());
-              } 
-              else if (arrSize[ident] == 1) {
-                      printf("Provided index for non-array Identifier %s.\n", ident.c_str());
-              }
-
-              temp.append(ident);
-              temp.append(", ");
-              temp.append($3.place);
-              $$.code = strdup($3.code);
-              $$.place = strdup(temp.c_str());
-              $$.arr = true;
-        }
-        ;    
+	temp.append($1);
+	temp.append(", ");
+	temp.append($3.place);
+	$$.code = strdup($3.code);
+	$$.place = strdup(temp.c_str());
+	$$.arr = true;
+    }
+    ;    
 
 %%
 
