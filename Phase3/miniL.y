@@ -165,7 +165,6 @@ declaration: identifiers COLON INTEGER //Ident
 	$$.code = strdup(temp.c_str());
 	$$.place = strdup("");
     }
-    | identifiers COLON ENUM L_PAREN identifiers R_PAREN {printf("declaration -> identifiers COLON ENUM L_PAREN identifiers R_PAREN\n");}
     | identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER
     {
     	size_t left = 0;
@@ -238,13 +237,13 @@ FuncIdent: IDENT
 /*IDENT CHECK AGAIN*/
 identifiers: IDENT
     {
-    	$$.place = strdup($1.place); //place
+    	$$.place = strdup($1); //place
 	$$.code = strdup("");
     }
     | IDENT COMMA identifiers
     {
     	std::string temp;
-	temp.append($1.place); //place
+	temp.append($1); //place
 	temp.append("|");
 	temp.append($3.place);
 	$$.place = strdup(temp.c_str());
