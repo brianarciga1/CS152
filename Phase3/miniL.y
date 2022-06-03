@@ -819,7 +819,7 @@ vars: var
 var: IDENT  //Ident
     {
     	std::string temp;
-	std::string ident = strdup($1);
+	std::string ident = $1.place;
 	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
 	    printf("Identifier %s is not declared.\n", ident.c_str());
 	} else if (arrSize[ident] > 1) {
@@ -832,13 +832,13 @@ var: IDENT  //Ident
     | IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET
     {
     	std::string temp;
-	std::string ident = strdup($1);
+	std::string ident = $1.place;
 	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
 	    printf("Identifier %s is not declared.\n", ident.c_str());
 	} else if (arrSize[ident] == 1) {
 	    printf("Provided index for non-array Identifier %s.\n", ident.c_str());
         }
-	temp.append(ident);
+	temp.append($1.place);
 	temp.append(", ");
 	temp.append($3.place);
 	$$.code = strdup($3.code);
