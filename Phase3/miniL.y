@@ -1,19 +1,17 @@
 /* cs152-miniL phase3 */
-/* cs152-miniL phase3 */
 %{
+    #define YY_NO_INPUT
     #include <stdio.h>
     #include <stdlib.h>
     #include <map>
     #include <string.h>
     #include <set>
     
-    void yyerror(const char* msg);
     extern int currLine;
     extern int currPos;
     bool mainFunc = false;
     int numTemp = 0;
     int numLabel = 0;
-    extern FILE* yyin;
 
     unsigned int tempCount = 0;
     unsigned int labelCount = 0;
@@ -26,6 +24,7 @@
     "R_PAREN", "L_SQUARE_BRACKET", "R_SQUARE_BRACKET", "ASSIGN", "functions", "function", "declarations", "declaration", "identifiers", "statements", 
     "statement", "bool_expr", "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
     
+    void yyerror(const char* msg);
     int yylex();
     std::string new_temp();
     std::string new_label();
@@ -52,11 +51,11 @@
 %type <expression> function FuncIdent declarations declaration var vars expressions expression identifiers relation_expr
 %type <expression> bool_expr relation_and_expr multiplicative_expr comp term
 %type <statement> statements statement 
-%left ADD MINUS
-%left EQ NEQ GT GTE LT LTE
-%right NOT
-%left AND OR
 %right ASSIGN
+%left AND OR
+%right NOT
+%left EQ NEQ GT GTE LT LTE
+%left ADD MINUS
 %left MULT DIV MOD
 
 %%
@@ -859,13 +858,11 @@ var: IDENT  //Ident
 %%
 
 int main(int argc, char** argv) {
-    if (argc == 2) {
-        yyin = fopen(argv[1], "r");
-    }
-    yyparse();
-    
-
-    return 0;
+	if (argc == 2) {
+		yyin = fopen(argv[1], "r");
+	}
+	yyparse();
+	return 0;
 }
 
 void yyerror(const char *msg) {
