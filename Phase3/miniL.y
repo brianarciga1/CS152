@@ -1,10 +1,12 @@
 /* cs152-miniL phase3 */
+/* cs152-miniL phase3 */
 %{
     #include <stdio.h>
     #include <stdlib.h>
-    #include <string.h>
     #include <map>
+    #include <string.h>
     #include <set>
+    
     void yyerror(const char* msg);
     extern int currLine;
     extern int currPos;
@@ -15,12 +17,15 @@
 
     unsigned int tempCount = 0;
     unsigned int labelCount = 0;
-
     std::map<std::string, std::string> varTemp;
     std::map<std::string, int> arrSize;
     std::set<std::string> funcs;
-    std::set<std::string> reserved { "NUMBER", "IDENT", "RETURN" }; // TODO LIST OF RESERVED KEYWORDS
-
+    std::set<std::string> reserved {"NUMBER", "IDENT", "FUNCTION", "BEGIN_PARAMS", "END_PARAMS", "BEGIN_LOCALS", "END_LOCALS", "BEGIN_BODY", "END_BODY", 
+    "INTEGER", "ARRAY", "ENUM", "OF", "IF", "THEN", "END_IF", "ELSE", "WHILE", "DO", "BEGIN_LOOP", "END_LOOP", "CONTINUE", "READ", "WRITE", "AND", "OR", 
+    "NOT", "TRUE", "FALSE", "RETURN", "MINUS", "ADD", "MULT", "DIV", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "SEMICOLON", "COLON", "COMMA", "L_PAREN", 
+    "R_PAREN", "L_SQUARE_BRACKET", "R_SQUARE_BRACKET", "ASSIGN", "functions", "function", "declarations", "declaration", "identifiers", "statements", 
+    "statement", "bool_expr", "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
+    
     int yylex();
     std::string new_temp();
     std::string new_label();
@@ -853,23 +858,14 @@ var: IDENT  //Ident
 
 %%
 
-int main(int argc, char ** argv)
-{
-   if(argc >= 2)
-   {
-      yyin = fopen(argv[1], "r");
-      if(yyin == NULL)
-      {
-         yyin = stdin;
-      }
-   }
-   else
-   {
-     yyin = stdin;
-   }
-   
-   yylex();
-   
+int main(int argc, char** argv) {
+    if (argc == 2) {
+        yyin = fopen(argv[1], "r");
+    }
+    yyparse();
+    
+
+    return 0;
 }
 
 void yyerror(const char *msg) {
