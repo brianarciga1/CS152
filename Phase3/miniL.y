@@ -6,7 +6,6 @@
     #include <string.h>
     #include <set>
     
-    void yyerror(const char* msg);
     extern int currLine;
     extern int currPos;
     bool mainFunc = false;
@@ -24,7 +23,8 @@
     "NOT", "TRUE", "FALSE", "RETURN", "MINUS", "ADD", "MULT", "DIV", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "SEMICOLON", "COLON", "COMMA", "L_PAREN", 
     "R_PAREN", "L_SQUARE_BRACKET", "R_SQUARE_BRACKET", "ASSIGN", "functions", "function", "declarations", "declaration", "identifiers", "statements", 
     "statement", "bool_expr", "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
-
+    
+    void yyerror(const char* msg);
     int yylex();
     std::string new_temp();
     std::string new_label();
@@ -46,17 +46,13 @@
 %error-verbose
 %start program
 %token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN END_IF ELSE WHILE DO BEGIN_LOOP END_LOOP CONTINUE READ WRITE TRUE FALSE RETURN SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
-%token <id_val> IDENT
 %token <num_val> NUMBER
+%token <id_val> IDENT
 %type <expression> function FuncIdent declarations declaration var vars expressions expression identifiers relation_expr
 %type <expression> bool_expr relation_and_expr multiplicative_expr comp term
 %type <statement> statements statement 
-%left ADD MINUS
-%left EQ NEQ GT GTE LT LTE
+%left ASSIGN EQ NEQ LT LTE GT GTE ADD MINUS MULT DIV MOD AND OR
 %right NOT
-%left AND OR
-%right ASSIGN
-%left MULT DIV MOD
 
 %%
 program:    %empty
