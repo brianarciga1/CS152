@@ -9,7 +9,7 @@
     
     extern int currLine;
     extern int currPos;
-    FILE * yyin;
+    extern FILE* yyin;
     bool mainFunc = false;
     int numTemp = 0;
     int numLabel = 0;
