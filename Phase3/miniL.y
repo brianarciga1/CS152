@@ -6,6 +6,7 @@
     #include <string.h>
     #include <set>
     
+    void yyerror(const char* msg);
     extern int currLine;
     extern int currPos;
     bool mainFunc = false;
@@ -24,7 +25,6 @@
     "R_PAREN", "L_SQUARE_BRACKET", "R_SQUARE_BRACKET", "ASSIGN", "functions", "function", "declarations", "declaration", "identifiers", "statements", 
     "statement", "bool_expr", "relation_and_expr", "relation_expr", "comp", "expressions", "expression", "multiplicative_expr", "term", "vars", "var"};
     
-    void yyerror(const char* msg);
     int yylex();
     std::string new_temp();
     std::string new_label();
@@ -51,8 +51,12 @@
 %type <expression> function FuncIdent declarations declaration var vars expressions expression identifiers relation_expr
 %type <expression> bool_expr relation_and_expr multiplicative_expr comp term
 %type <statement> statements statement 
-%left ASSIGN EQ NEQ LT LTE GT GTE ADD MINUS MULT DIV MOD AND OR
+%left ADD MINUS
+%left EQ NEQ GT GTE LT LTE
 %right NOT
+%left AND OR
+%right ASSIGN
+%left MULT DIV MOD
 
 %%
 program:    %empty
