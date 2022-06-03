@@ -238,13 +238,13 @@ FuncIdent: IDENT
 /*IDENT CHECK AGAIN*/
 identifiers: IDENT
     {
-    	$$.place = strdup($1); //place
+    	$$.place = strdup($1.place); //place
 	$$.code = strdup("");
     }
     | IDENT COMMA identifiers
     {
     	std::string temp;
-	temp.append($1); //place
+	temp.append($1.place); //place
 	temp.append("|");
 	temp.append($3.place);
 	$$.place = strdup(temp.c_str());
@@ -252,14 +252,6 @@ identifiers: IDENT
     }
     ;
     
-/*    
-Ident: IDENT
-    {
-    	$$.place = strdup($1);
-	$$.code = strdup("");
-    }
-    ;
-*/
 
 /*STATEMENT changed to match lex*/
 statements: statement SEMICOLON statements
