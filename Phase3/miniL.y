@@ -233,13 +233,13 @@ FuncIdent: IDENT
     
 identifiers: IDENT
     {
-    	$$.place = strdup($1);
+    	$$.place = strdup($1); //place
 	$$.code = strdup("");
     }
     | IDENT COMMA identifiers
     {
     	std::string temp;
-	temp.append($1);
+	temp.append($1); //place
 	temp.append("|");
 	temp.append($3.place);
 	$$.place = strdup(temp.c_str());
@@ -799,31 +799,29 @@ vars: var
     }
     ;
 	
-var: IDENT                                                      
+var: IDENT
     {
     	std::string temp;
+	std::string ident = $1;
+	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
+	    printf("Identifier %s is not declared.\n", ident.c_str());
+	} else if (arrSize[ident] > 1) {
+	    printf("Did not provide index for array Identifier %s.\n", ident.c_str());
+	}
 	$$.code = strdup("");
-	std::string ident = strdup($1);
-	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()) {
-		printf("Identifier %s is not declared.\n", ident.c_str());
-	}
-	else if (arrSize[ident] > 1) {
-		printf("Did not provide index for array Identifier %s.\n", ident.c_str());
-	}
 	$$.place = strdup(ident.c_str());
-	$$.arr = false; 
+	$$.arr = false;
     }
     | IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET
     {
     	std::string temp;
-	std::string ident = strdup($1);
-	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()) {
-		printf("Identifier %s is not declared.\n", ident.c_str());
-	}
-	else if (arrSize[ident] == 1) {
-		printf("Provided index for non-array Identifier %s.\n", ident.c_str());
-	}
-	temp.append(ident);
+	std::string ident = $1;
+	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
+	    printf("Identifier %s is not declared.\n", ident.c_str());
+	} else if (arrSize[ident] == 1) {
+	    printf("Provided index for non-array Identifier %s.\n", ident.c_str());
+        }
+	temp.append($1);
 	temp.append(", ");
 	temp.append($3.place);
 	$$.code = strdup($3.code);
@@ -842,16 +840,18 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-void yyerror(const char *msg) {
-   printf("** Line %d, position %d: %s\n", currLine, currPos, msg);
+void yyerror(const char* msg)
+{
+	extern int yylineno; // defined and maintained in lex file
+	extern char *yytext; // defined and maintained in lex file
+	printf("%s on line %d at char %d at symbol \"%s\"\n", msg, yylineno, currPos, yytext);
+	exit(1);
 }
-
 std::string new_temp(){
 	std::string t = "t" + std::to_string(tempCount);
 	tempCount++;
 	return t;
 }
-
 std::string new_label(){
 	std::string l = "L" + std::to_string(labelCount);
 	labelCount++;
