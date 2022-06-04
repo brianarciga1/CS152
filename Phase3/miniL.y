@@ -71,7 +71,6 @@ program:    %empty
     }
     ;
 
-/*FUNCTION DONE*/
 function: FUNCTION FuncIdent SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
     {
 	std::string temp = "func ";
@@ -104,7 +103,6 @@ function: FUNCTION FuncIdent SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGI
     }
     ;
 
-/*DECLARATION DONE*/
 declarations: declaration SEMICOLON declarations
     {
     	std::string temp;
@@ -120,7 +118,7 @@ declarations: declaration SEMICOLON declarations
     }
     ;
     
-declaration: identifiers COLON INTEGER //Ident
+declaration: identifiers COLON INTEGER
     {
     	int left = 0;
 	int right = 0;
@@ -220,7 +218,6 @@ $$.place = strdup("");
 }
 ;
 
-/*FUNCIDENT DONE*/
 FuncIdent: IDENT
     {
     	if (funcs.find($1) != funcs.end()) {
@@ -234,7 +231,6 @@ FuncIdent: IDENT
     }
     ;
     
-/*IDENT CHECK AGAIN*/
 identifiers: IDENT
     {
     	$$.place = strdup($1); //place
@@ -251,8 +247,6 @@ identifiers: IDENT
     }
     ;
     
-
-/*STATEMENT changed to match lex*/
 statements: statement SEMICOLON statements
     {
     	std::string temp;
@@ -303,7 +297,6 @@ statement: var ASSIGN expression
 	temp = temp + ": " + after + "\n";
 	$$.code = strdup(temp.c_str());
     }
-    //////////////////////
     | IF  bool_expr THEN statements ELSE statements END_IF
     {
     	std::string ifS = new_label();
@@ -405,7 +398,7 @@ statement: var ASSIGN expression
     }
     ;
 	
-bool_expr: relation_and_expr //done
+bool_expr: relation_and_expr
     {
         $$.code = strdup($1.code);
         $$.place = strdup($1.place);
@@ -427,7 +420,7 @@ bool_expr: relation_and_expr //done
     }
     ;
     
-relation_and_expr: relation_expr /*dont*/
+relation_and_expr: relation_expr
     {
     	$$.code = strdup($1.code);
         $$.place = strdup($1.place);
@@ -449,7 +442,7 @@ relation_and_expr: relation_expr /*dont*/
     }
     ;
     
-relation_expr: expression comp expression /*done*/
+relation_expr: expression comp expression
     {
         std::string dst = new_temp();
         std::string temp;
@@ -515,7 +508,6 @@ relation_expr: expression comp expression /*done*/
     }
     ;
 
-/*COMP done*/
 comp: EQ 
     {
     	$$.code = strdup("");
@@ -548,8 +540,6 @@ comp: EQ
     }
     ;
     	
-	
-/*EXPRESSION done*/
 expressions: expression
     {
 	std::string temp;
@@ -609,7 +599,6 @@ expression: multiplicative_expr
      }
      ;	
 	
-/*MULTIPLICATIVE-EXPR*/	//Line 625
 multiplicative_expr: term MULT multiplicative_expr
     {
 	std::string temp;
@@ -644,7 +633,7 @@ multiplicative_expr: term MULT multiplicative_expr
 	$$.code = strdup(temp.c_str());
 	$$.place = strdup(dst.c_str());
     }
-    | term MOD multiplicative_expr //LINE 659 guessing
+    | term MOD multiplicative_expr
     {
     	std::string temp;
 	std::string dst = new_temp();
@@ -667,9 +656,7 @@ multiplicative_expr: term MULT multiplicative_expr
 	$$.place = strdup($1.place);
      }
      ;
-    	
-	
-/*TERM*/ 	
+    		
 term: var
     {
     	std::string dst = new_temp();
@@ -713,7 +700,7 @@ term: var
     	$$.code = strdup($2.code);
 	$$.place = strdup($2.place);
     }
-    | IDENT L_PAREN expressions R_PAREN //Line 777 NOTDONE
+    | IDENT L_PAREN expressions R_PAREN
     {
     	std::string temp;
 	std::string func = $1; //place
@@ -781,16 +768,12 @@ term: var
     }
     ;
     
-    
-    
-
-/*VAR*/ //LINE 794
 vars: var
     {
     	std::string temp;
 	temp.append($1.code);
 	if ($1.arr) {
-	    temp.append(".[]| "); //CHECK,COULD BE WRONG
+	    temp.append(".[]| ");
 	} else {
 	    temp.append(".| ");
 	}
@@ -816,7 +799,7 @@ vars: var
     }
     ;
 	
-var: IDENT  //Ident
+var: IDENT
     {
     	std::string temp;
 	std::string ident = $1;
