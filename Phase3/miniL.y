@@ -233,13 +233,13 @@ FuncIdent: IDENT
     
 identifiers: IDENT
     {
-    	$$.place = strdup($1); //place
+    	$$.place = strdup($1);
 	$$.code = strdup("");
     }
     | IDENT COMMA identifiers
     {
     	std::string temp;
-	temp.append($1); //place
+	temp.append($1);
 	temp.append("|");
 	temp.append($3.place);
 	$$.place = strdup(temp.c_str());
@@ -799,29 +799,31 @@ vars: var
     }
     ;
 	
-var: IDENT
+var: IDENT                                                      
     {
     	std::string temp;
-	std::string ident = $1;
-	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
-	    printf("Identifier %s is not declared.\n", ident.c_str());
-	} else if (arrSize[ident] > 1) {
-	    printf("Did not provide index for array Identifier %s.\n", ident.c_str());
-	}
 	$$.code = strdup("");
+	std::string ident = strdup($1);
+	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()) {
+		printf("Identifier %s is not declared.\n", ident.c_str());
+	}
+	else if (arrSize[ident] > 1) {
+		printf("Did not provide index for array Identifier %s.\n", ident.c_str());
+	}
 	$$.place = strdup(ident.c_str());
-	$$.arr = false;
+	$$.arr = false; 
     }
     | IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET
     {
     	std::string temp;
-	std::string ident = $1;
-	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()){
-	    printf("Identifier %s is not declared.\n", ident.c_str());
-	} else if (arrSize[ident] == 1) {
-	    printf("Provided index for non-array Identifier %s.\n", ident.c_str());
-        }
-	temp.append($1);
+	std::string ident = strdup($1);
+	if (funcs.find(ident) == funcs.end() && varTemp.find(ident) == varTemp.end()) {
+		printf("Identifier %s is not declared.\n", ident.c_str());
+	}
+	else if (arrSize[ident] == 1) {
+		printf("Provided index for non-array Identifier %s.\n", ident.c_str());
+	}
+	temp.append(ident);
 	temp.append(", ");
 	temp.append($3.place);
 	$$.code = strdup($3.code);
